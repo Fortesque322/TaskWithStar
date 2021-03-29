@@ -9,7 +9,7 @@ uses
   Unit1 in 'Unit1.pas';
 
 var
-  x : integer;
+  x,i : integer;
   a : array of string;
   z : real;
   y : double;
@@ -33,21 +33,18 @@ var
       Writeln('Модель: ');
       readln(w);
       Count.GetModel(w);
-      Writeln('Через сколько дней обсуживание: ');
-      readln(x);
-      Count.GetServiceDate(x);
-      Writeln('Время рааботы сервера (Дни): ');
-      readln(x);
-      Count.GetUpTime(x);
-      //readln(x);           // разобраться с вводом массива
+
+
+
+      //readln(x);
 //    readln(a[i]);
 //    Count.GetEngineerName(x, a);
     Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
     Writeln('Стаж: ' + floattostr(Count.ServiceEngineer.FExperience));
     Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
     Writeln('Модель Сервера: ' + Count.Server.FModel);
-    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
-    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
+
+
     sleep(2000);
   except
     on E: Exception do

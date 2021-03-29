@@ -39,7 +39,7 @@ var
       Writeln('Время рааботы сервера (Дни): ');
       readln(x);
       Count.GetUpTime(x);
-      //readln(x);           // разобраться с вводом массива
+      //readln(x);
 //    readln(a[i]);
 //    Count.GetEngineerName(x, a);
     Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));

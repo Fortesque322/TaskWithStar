@@ -32,9 +32,6 @@ type
     procedure GetExperience(Exp:real);
     procedure GetEngineerName(Quantity: integer; NameEngineer:array of string);
     procedure GetBill(Price:double);
-    procedure GetModel(Model:string);
-    procedure GetUpTime(Days:integer);
-    procedure GetServiceDate(DateDay:integer);
     function AsBytes : TBytes;
     procedure SetBytes(Buf: Tbytes);
     constructor Create();
@@ -82,24 +79,9 @@ procedure TCount.GetExperience(Exp: real);
     ServiceEngineer.FExperience := Exp;
   end;
 
-procedure TCount.GetModel(Model: string);
-  begin
-    Server.FModel:= Model;
-  end;
-
 procedure TCount.GetSalary(Salary: real);
   begin
     ServiceEngineer.FSalary := Salary;
-  end;
-
-procedure TCount.GetServiceDate(DateDay: integer);
-  begin
-    Server.FServiceDate:= DateDay;
-  end;
-
-procedure TCount.GetUpTime(Days: integer);
-  begin
-    Server.FUptimeDay:= Days;
   end;
 
 procedure TCount.SetBytes(Buf: Tbytes);
