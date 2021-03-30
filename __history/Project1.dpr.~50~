@@ -10,7 +10,7 @@ uses
 
 var
   x,i : integer;
-  a : array of string;
+  a : array of integer;
   z : real;
   y : double;
   w : string;
@@ -21,14 +21,13 @@ var
   begin
   try
     Count := TCount.Create();
-    Count.GetEngineerName();
+    Count.GetEngineerName(x, a);
+      begin
+      SetLength(a,10);
+      for i := 0 to 10 do
+      readln(a[i]);           // разобраться с вводом массива
 
-//      begin
-//      SetLength(a,10);
-//      for i := 0 to 10 do
-//      readln(a[i]);           // разобраться с вводом массива
-//      end;
-
+      end;
     Writeln('ЗП: ');
     readln(z);
     Count.GetSalary(z);

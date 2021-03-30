@@ -30,7 +30,7 @@ type
     ServiceEngineer : TServiceEngineer;
     procedure GetSalary(Salary:real);
     procedure GetExperience(Exp:real);
-    procedure GetEngineerName(Quantity: integer; NameEngineer:array of string);
+    procedure GetEngineerName();
     procedure GetBill(Price:double);
     procedure GetModel(Model:string);
     procedure GetUpTime(Days:integer);
@@ -65,15 +65,18 @@ procedure TCount.GetBill(Price: double);
     ServiceCentr.FBill := Price;
   end;
 
-procedure TCount.GetEngineerName(Quantity: integer; NameEngineer:array of string);
+procedure TCount.GetEngineerName(); //Quantity: integer; NameEngineer:array of string
   var
-    i : integer;
+    i,x, Quantity : integer;
   begin
     i := 0;
+    Writeln('Кол-во сотурдников: ');
+    readln(x);
+    Quantity:= x ;
     SetLength(ServiceEngineer.FName, Quantity);
     for I := 0 to Quantity-1 do
     begin
-      ServiceEngineer.FName[i]:= NameEngineer[i];
+      readln(ServiceEngineer.FName[i]);
     end;
   end;
 
