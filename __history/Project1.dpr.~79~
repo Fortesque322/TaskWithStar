@@ -15,13 +15,13 @@ var
   begin
   try
     Count := TCount.Create();
-    Count.GetEngineerName();
-    Count.GetSalary();
-    Count.GetExperience();
-    Count.GetBill();
-    Count.GetModel();
-    Count.GetServiceDate();
-    Count.GetUpTime();
+    Count.SetEngineerName();
+    Count.SetSalary();
+    Count.SetExperience();
+    Count.SetBill();
+    Count.SetModel();
+    Count.SetServiceDate();
+    Count.SetUpTime();
     Count.SaveFromText();
     for str in Count.ServiceEngineer.FName do
     Writeln('Сотрудники: ' + str);
@@ -32,8 +32,8 @@ var
     Writeln('Модель Сервера: ' + str);
     Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
     Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
+//    Count.ReadFromText();
     readln;
-//    sleep(2000);
 
   except
     on E: Exception do

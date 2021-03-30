@@ -38,6 +38,7 @@ type
     procedure SetSalary();
     procedure SetExperience();
     procedure SaveFromText();
+    procedure ReadFromText();
     function AsBytes : TBytes;
     procedure SetBytes(Buf: Tbytes);
     constructor Create();
@@ -62,6 +63,21 @@ destructor TCount.Destroy;
 begin
 
 end;
+
+procedure TCount.ReadFromText;
+  var
+    TextRead: TextFile;
+    str: string; 
+  begin
+    AssignFile(TextRead, 'C:\distr\Record.txt');
+    Reset(TextRead);
+    while not eof(TextRead) do
+      begin
+        Readln(TextRead, str);
+     //   writeln(str);
+    end;
+    Close(TextRead);
+  end;
 
 procedure TCount.SetBill();
   var

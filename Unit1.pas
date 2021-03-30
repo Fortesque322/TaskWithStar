@@ -37,7 +37,8 @@ type
     procedure SetEngineerName();
     procedure SetSalary();
     procedure SetExperience();
-    procedure SaveFromText();
+    procedure SaveToText();
+    procedure SaveToNoType();
     procedure ReadFromText();
     function AsBytes : TBytes;
     procedure SetBytes(Buf: Tbytes);
@@ -86,7 +87,6 @@ procedure TCount.SetBill();
     Writeln('Счет: ');
     readln(Price);
     ServiceCentr.FBill := Price;
-    //можно попробовать пихнуть сюда запись в файл исключая доп функцию
   end;
 
 procedure TCount.SetDeliveryTime;
@@ -110,13 +110,13 @@ procedure TCount.SetEngineerName();
   begin
     i := 0;
     Writeln('Кол-во сотурдников: ');
-    readln(Quantity);
-//    SetLength(ServiceEngineer.FName, 0);
-    Writeln('Введите имена: ');
+    readln(Quantity);                             //Вводим размер массива
+//    SetLength(ServiceEngineer.FName, 0);        //После вызоыва конструктора прошла инициализация полей
+    Writeln('Введите имена: ');                   
     for I := 0 to Quantity-1 do
     begin
-      readln(x);
-      ServiceEngineer.FName := ServiceEngineer.FName + [x];
+      readln(x);                                  //Ввод эодного лемента массива
+      ServiceEngineer.FName := ServiceEngineer.FName + [x];  // Присваивание Фнейму его же значение плюс новый элемент массива веденный с клавиатуры
     end;
   end;
 
@@ -173,19 +173,19 @@ procedure TCount.SetUpTime();
     Server.FUptimeDay:= Days;
   end;
 
-procedure TCount.SaveFromText;
+procedure TCount.SaveToText;
   var
     TextForSave : TextFile;
     i : integer;
     str : string;
   begin
-    AssignFile(TextForSave, 'C:\Distr\Record.txt');
-    if not FileExists('C:\Distr\Record.txt') then
-      Rewrite(TextForSave);
-    Append(TextForSave);
-    //Engineer
-    for str in ServiceEngineer.FName do
-    Writeln(TextForSave, str);
+    AssignFile(TextForSave, 'C:\Distr\Record.txt');   //привязка файла к переменной
+    if not FileExists('C:\Distr\Record.txt') then     //если файла нет то
+      Rewrite(TextForSave);                           //Создать его
+    Append(TextForSave);                              //Добавить в конец строки
+    //Engineer                                        
+    for str in ServiceEngineer.FName do               //Перебор значений в массиве
+    Writeln(TextForSave, str);                        //Вывод элементов массива
     Writeln(TextForSave, ServiceEngineer.FSalary);
     Writeln(TextForSave, ServiceEngineer.FExperience); 
     //Model   
@@ -199,6 +199,20 @@ procedure TCount.SaveFromText;
     Writeln(TextForSave, ServiceCentr.FDeliveryTimeDay);
     Writeln(TextForSave, ServiceCentr.FBill);
     Close(TextForSave);
+  end;
+
+procedure TCount.SaveToNoType;
+  var
+    TextForByte : File;
+    count:integer;
+    buf : TBytes;
+  begin
+    AssignFile(TextForByte,'C:\distr\NoTypeFile');
+    if not FileExists('C:\distr\NoTypeFile') then
+      Rewrite(TextForByte,1);
+    Reset(TextForByte,1);
+    BlockWrite(TextForByte, buf, count);
+    Close(TextForByte);
   end;
 
 procedure TCount.SetBytes(Buf: Tbytes);

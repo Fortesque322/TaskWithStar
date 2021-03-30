@@ -37,7 +37,8 @@ type
     procedure SetEngineerName();
     procedure SetSalary();
     procedure SetExperience();
-    procedure SaveFromText();
+    procedure SaveToText();
+    procedure SaveToNoType();
     procedure ReadFromText();
     function AsBytes : TBytes;
     procedure SetBytes(Buf: Tbytes);
@@ -72,9 +73,9 @@ procedure TCount.ReadFromText;
     AssignFile(TextRead, 'C:\distr\Record.txt');
     Reset(TextRead);
     while not eof(TextRead) do
-    begin
-    Readln(TextRead, str);
-    writeln(str);
+      begin
+        Readln(TextRead, str);
+        writeln(str);
     end;
     Close(TextRead);
   end;
@@ -173,7 +174,7 @@ procedure TCount.SetUpTime();
     Server.FUptimeDay:= Days;
   end;
 
-procedure TCount.SaveFromText;
+procedure TCount.SaveToText;
   var
     TextForSave : TextFile;
     i : integer;
@@ -199,6 +200,20 @@ procedure TCount.SaveFromText;
     Writeln(TextForSave, ServiceCentr.FDeliveryTimeDay);
     Writeln(TextForSave, ServiceCentr.FBill);
     Close(TextForSave);
+  end;
+
+procedure TCount.SaveToNoType;
+  var
+    TextForByte : File;
+    number:integer;
+    buf : TBytes;
+  begin
+    AssignFile(TextForByte,'C:\distr\NoTypeFile');
+    if not FileExists('C:\distr\NoTypeFile') then
+      Rewrite(TextForByte,1);
+    Reset(TextForByte,1);
+    BlockWrite(TextForByte,buf[0],1);
+    Close(TextForByte);
   end;
 
 procedure TCount.SetBytes(Buf: Tbytes);

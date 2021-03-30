@@ -14,27 +14,27 @@ var
   str: string;
   begin
   try
-  Count.ReadFromText();
-//    Count := TCount.Create();
-//    Count.SetEngineerName();
-//    Count.SetSalary();
-//    Count.SetExperience();
-//    Count.SetBill();
-//    Count.SetModel();
-//    Count.SetServiceDate();
-//    Count.SetUpTime();
-//    Count.SaveFromText();
-//    for str in Count.ServiceEngineer.FName do
-//    Writeln('Сотрудники: ' + str);
-//    Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
-//    Writeln('Стаж: ' + floattostr(Count.ServiceEngineer.FExperience));
-//    Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
-//    for str in Count.Server.FModel do
-//    Writeln('Модель Сервера: ' + str);
-//    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
-//    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
+    Count := TCount.Create();
+    Count.SetEngineerName();
+    Count.SetSalary();
+    Count.SetExperience();
+    Count.SetBill();
+    Count.SetModel();
+    Count.SetServiceDate();
+    Count.SetUpTime();
+    Count.SaveToText();
+    Count.SaveToNoType();
+    for str in Count.ServiceEngineer.FName do
+    Writeln('Сотрудники: ' + str);
+    Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
+    Writeln('Стаж: ' + floattostr(Count.ServiceEngineer.FExperience));
+    Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
+    for str in Count.Server.FModel do
+    Writeln('Модель Сервера: ' + str);
+    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
+    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
+//    Count.ReadFromText();
     readln;
-//    sleep(2000);
 
   except
     on E: Exception do

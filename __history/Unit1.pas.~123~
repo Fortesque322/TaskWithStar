@@ -72,7 +72,10 @@ procedure TCount.ReadFromText;
     AssignFile(TextRead, 'C:\distr\Record.txt');
     Reset(TextRead);
     while not eof(TextRead) do
-    Read(TextRead, str);
+      begin
+        Readln(TextRead);
+        writeln(str);
+    end;
     Close(TextRead);
   end;
 
