@@ -70,7 +70,6 @@ procedure TCount.GetBill();
     Writeln('Счет: ');
     readln(Price);
     ServiceCentr.FBill := Price;
-    //можно попробовать пихнуть сюда запись в файл исключая доп функцию
   end;
 
 procedure TCount.GetDeliveryTime;
@@ -100,7 +99,7 @@ procedure TCount.GetEngineerName();
     for I := 0 to Quantity-1 do
     begin
       readln(x);
-      ServiceEngineer.FName[i]:= x;            //тут
+      ServiceEngineer.FName[i]:= x;
     end;
   end;
 
@@ -158,16 +157,8 @@ procedure TCount.GetUpTime();
 procedure TCount.SaveFromText;
   var
     TextForSave : TextFile;
-    i : integer;
   begin
-    AssignFile(TextForSave, 'C:\Distr\Record.txt');
-    if not FileExists('C:\Distr\Record.txt') then
-      Rewrite(TextForSave);
-    Append(TextForSave);
-    Writeln(TextForSave, Server.FModel[i]);   //Неверная запись в файл из за заполенния массива
-    Writeln(TextForSave, Server.FUptimeDay);
-    Writeln(TextForSave, Server.FServiceDate);
-    Close(TextForSave);
+    AssignFile(TextForSave, 'C:\Distr\Record.txt')
   end;
 
 procedure TCount.SetBytes(Buf: Tbytes);

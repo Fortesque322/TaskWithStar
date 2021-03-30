@@ -70,7 +70,6 @@ procedure TCount.GetBill();
     Writeln('—чет: ');
     readln(Price);
     ServiceCentr.FBill := Price;
-    //можно попробовать пихнуть сюда запись в файл исключа€ доп функцию
   end;
 
 procedure TCount.GetDeliveryTime;
@@ -100,7 +99,7 @@ procedure TCount.GetEngineerName();
     for I := 0 to Quantity-1 do
     begin
       readln(x);
-      ServiceEngineer.FName[i]:= x;            //тут
+      ServiceEngineer.FName[i]:= x;
     end;
   end;
 

@@ -37,6 +37,7 @@ type
     procedure GetEngineerName();
     procedure GetSalary();
     procedure GetExperience();
+    procedure SaveFromText();
     function AsBytes : TBytes;
     procedure SetBytes(Buf: Tbytes);
     constructor Create();
@@ -85,9 +86,10 @@ procedure TCount.GetDetails;
 
   end;
 
-procedure TCount.GetEngineerName(); //Quantity: integer; NameEngineer:array of string
+procedure TCount.GetEngineerName();
   var
-    i,x, Quantity : integer;
+    i, Quantity : integer;
+    x: string;
   begin
     i := 0;
     Writeln('Кол-во сотурдников: ');
@@ -96,7 +98,8 @@ procedure TCount.GetEngineerName(); //Quantity: integer; NameEngineer:array of s
     Writeln('Введите имена: ');
     for I := 0 to Quantity-1 do
     begin
-      readln(ServiceEngineer.FName[i]);
+      readln(x);
+      ServiceEngineer.FName[i]:= x;
     end;
   end;
 
@@ -149,6 +152,21 @@ procedure TCount.GetUpTime();
     Writeln('Время рааботы сервера (Дни): ');
     readln(Days);
     Server.FUptimeDay:= Days;
+  end;
+
+procedure TCount.SaveFromText;
+  var
+    TextForSave : TextFile;
+    i : integer;
+  begin
+    AssignFile(TextForSave, 'C:\Distr\Record.txt');
+    if not FileExists('C:\Distr\Record.txt') then
+      Rewrite(TextForSave);
+    Append(TextForSave);
+    Writeln(TextForSave, Server.FModel[i]);   //Неверная запись в файл
+    Writeln(TextForSave, Server.FUptimeDay);
+    Writeln(TextForSave, Server.FServiceDate);
+    Close(TextForSave);
   end;
 
 procedure TCount.SetBytes(Buf: Tbytes);

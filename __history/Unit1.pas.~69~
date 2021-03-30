@@ -7,14 +7,14 @@ uses
 
 type
   TServer = record
-    FModel: string;
+    FModel: array of string;
     FUptimeDay :integer;
     FServiceDate: integer;
   end;
 
   TServiceCentr = record
     FDetails : array of string;
-    FDeliveryTimeDay : array of integer;
+    FDeliveryTimeDay : integer;
     FBill : double;
   end;
 
@@ -37,6 +37,7 @@ type
     procedure GetEngineerName();
     procedure GetSalary();
     procedure GetExperience();
+    procedure SaveFromText();
     function AsBytes : TBytes;
     procedure SetBytes(Buf: Tbytes);
     constructor Create();
@@ -71,19 +72,34 @@ procedure TCount.GetBill();
     ServiceCentr.FBill := Price;
   end;
 
-procedure TCount.GetEngineerName(); //Quantity: integer; NameEngineer:array of string
+procedure TCount.GetDeliveryTime;
   var
-    i,x, Quantity : integer;
+    DeliveryDay : integer;
+  begin
+    Writeln('Дней до доставки: : ');
+    readln(DeliveryDay);
+    ServiceCentr.FDeliveryTimeDay := DeliveryDay;
+  end;
+
+procedure TCount.GetDetails;
+  begin
+
+  end;
+
+procedure TCount.GetEngineerName();
+  var
+    i, Quantity : integer;
+    x: string;
   begin
     i := 0;
     Writeln('Кол-во сотурдников: ');
-    readln(x);
-    Quantity:= x ;
+    readln(Quantity);
     SetLength(ServiceEngineer.FName, Quantity);
     Writeln('Введите имена: ');
     for I := 0 to Quantity-1 do
     begin
-      readln(ServiceEngineer.FName[i]);
+      readln(x);
+      ServiceEngineer.FName[i]:= x;
     end;
   end;
 
@@ -98,11 +114,17 @@ procedure TCount.GetExperience();
 
 procedure TCount.GetModel();
   var
-    Model : string;
+    i,x : integer;
   begin
-    Writeln('Модель: ');
-    readln(Model);
-    Server.FModel:= Model;
+    i := 0;
+    Writeln('Количество серверов: ');
+    readln(x);
+    SetLength(Server.FModel, x);
+    Writeln('Введите модели: ');
+    for I := 0 to x-1 do
+    begin
+      readln(Server.FModel[i]);
+    end;
   end;
 
 procedure TCount.GetSalary();
@@ -130,6 +152,20 @@ procedure TCount.GetUpTime();
     Writeln('Время рааботы сервера (Дни): ');
     readln(Days);
     Server.FUptimeDay:= Days;
+  end;
+
+procedure TCount.SaveFromText;
+  var
+    TextForSave : TextFile;
+  begin
+    AssignFile(TextForSave, 'C:\Distr\Record.txt');
+    if not FileExists('C:\Distr\Record.txt') then
+      Rewrite(TextForSave);
+    Append(TextForSave);
+
+    Writeln(TextForSave, Server.FUptimeDay);
+    Writeln(TextForSave, Server.FServiceDate);
+    Close(TextForSave);
   end;
 
 procedure TCount.SetBytes(Buf: Tbytes);

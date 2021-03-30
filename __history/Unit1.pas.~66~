@@ -7,14 +7,14 @@ uses
 
 type
   TServer = record
-    FModel: string;
+    FModel: array of string;
     FUptimeDay :integer;
     FServiceDate: integer;
   end;
 
   TServiceCentr = record
     FDetails : array of string;
-    FDeliveryTimeDay : array of integer;
+    FDeliveryTimeDay : integer;
     FBill : double;
   end;
 
@@ -28,13 +28,15 @@ type
     Server : TServer;
     ServiceCentr : TServiceCentr;
     ServiceEngineer : TServiceEngineer;
+    procedure GetModel();
+    procedure GetUpTime();
+    procedure GetServiceDate();
+    procedure GetDetails();
+    procedure GetDeliveryTime();
+    procedure GetBill();
+    procedure GetEngineerName();
     procedure GetSalary();
     procedure GetExperience();
-    procedure GetEngineerName();
-    procedure GetBill();
-    procedure GetModel(Model:string);
-    procedure GetUpTime(Days:integer);
-    procedure GetServiceDate(DateDay:integer);
     function AsBytes : TBytes;
     procedure SetBytes(Buf: Tbytes);
     constructor Create();
@@ -69,19 +71,34 @@ procedure TCount.GetBill();
     ServiceCentr.FBill := Price;
   end;
 
-procedure TCount.GetEngineerName(); //Quantity: integer; NameEngineer:array of string
+procedure TCount.GetDeliveryTime;
   var
-    i,x, Quantity : integer;
+    DeliveryDay : integer;
+  begin
+    Writeln('Дней до доставки: : ');
+    readln(DeliveryDay);
+    ServiceCentr.FDeliveryTimeDay := DeliveryDay;
+  end;
+
+procedure TCount.GetDetails;
+  begin
+
+  end;
+
+procedure TCount.GetEngineerName();
+  var
+    i, Quantity : integer;
+    x: string;
   begin
     i := 0;
     Writeln('Кол-во сотурдников: ');
-    readln(x);
-    Quantity:= x ;
+    readln(Quantity);
     SetLength(ServiceEngineer.FName, Quantity);
     Writeln('Введите имена: ');
     for I := 0 to Quantity-1 do
     begin
-      readln(ServiceEngineer.FName[i]);
+      readln(x);
+      ServiceEngineer.FName[i]:= x;
     end;
   end;
 
@@ -94,9 +111,19 @@ procedure TCount.GetExperience();
     ServiceEngineer.FExperience := Exp;
   end;
 
-procedure TCount.GetModel(Model: string);
+procedure TCount.GetModel();
+  var
+    i,x : integer;
   begin
-    Server.FModel:= Model;
+    i := 0;
+    Writeln('Количество серверов: ');
+    readln(x);
+    SetLength(Server.FModel, x);
+    Writeln('Введите модели: ');
+    for I := 0 to x-1 do
+    begin
+      readln(Server.FModel[i]);
+    end;
   end;
 
 procedure TCount.GetSalary();
@@ -108,13 +135,21 @@ procedure TCount.GetSalary();
     ServiceEngineer.FSalary := Salary;
   end;
 
-procedure TCount.GetServiceDate(DateDay: integer);
+procedure TCount.GetServiceDate();
+  var
+    DateDay: integer;
   begin
+    Writeln('Через сколько дней обсуживание: ');
+    readln(DateDay);
     Server.FServiceDate:= DateDay;
   end;
 
-procedure TCount.GetUpTime(Days: integer);
+procedure TCount.GetUpTime();
+  var
+    Days : integer;
   begin
+    Writeln('Время рааботы сервера (Дни): ');
+    readln(Days);
     Server.FUptimeDay:= Days;
   end;
 
