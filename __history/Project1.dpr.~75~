@@ -33,7 +33,7 @@ var
 //    Writeln('Модель Сервера: ' + str);
 //    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
 //    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
-    readln;
+//    readln;
 //    sleep(2000);
 
   except

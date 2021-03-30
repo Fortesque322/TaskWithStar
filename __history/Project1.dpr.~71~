@@ -14,16 +14,16 @@ var
   str: string;
   begin
   try
-  Count.ReadFromText();
-//    Count := TCount.Create();
-//    Count.SetEngineerName();
-//    Count.SetSalary();
-//    Count.SetExperience();
-//    Count.SetBill();
-//    Count.SetModel();
-//    Count.SetServiceDate();
-//    Count.SetUpTime();
-//    Count.SaveFromText();
+    Count := TCount.Create();
+    Count.SetEngineerName();
+    Count.SetSalary();
+    Count.SetExperience();
+    Count.SetBill();
+    Count.SetModel();
+    Count.SetServiceDate();
+    Count.SetUpTime();
+    Count.SaveFromText();
+    Count.ReadFromText();
 //    for str in Count.ServiceEngineer.FName do
 //    Writeln('Сотрудники: ' + str);
 //    Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));

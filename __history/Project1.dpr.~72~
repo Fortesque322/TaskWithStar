@@ -11,22 +11,26 @@ uses
 var
   Count : TCount;
   i : integer;
-
+  str: string;
   begin
   try
     Count := TCount.Create();
-    Count.GetEngineerName();
-    Count.GetSalary();
-    Count.GetExperience();
-    Count.GetBill();
-    Count.GetModel();
-    Count.GetServiceDate();
-    Count.GetUpTime();
-    Writeln('Сотрудники: ' + Count.ServiceEngineer.FName[i]);  //отображает только первый элемент
+    Count.SetEngineerName();
+    Count.SetSalary();
+    Count.SetExperience();
+    Count.SetBill();
+    Count.SetModel();
+    Count.SetServiceDate();
+    Count.SetUpTime();
+    Count.SaveFromText();
+    Count.ReadFromText();
+    for str in Count.ServiceEngineer.FName do
+    Writeln('Сотрудники: ' + str);
     Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
     Writeln('Стаж: ' + floattostr(Count.ServiceEngineer.FExperience));
     Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
-    Writeln('Модель Сервера: ' + Count.Server.FModel[i]);        //отображает только первый элемент
+    for str in Count.Server.FModel do
+    Writeln('Модель Сервера: ' + str);
     Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
     Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
     readln;

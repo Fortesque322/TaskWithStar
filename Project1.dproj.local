@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.481,=C:\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.846,C:\Projects\Unit1.pas=C:\Test\NewTaskWithStar\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.627,=C:\Projects\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.846,C:\Test\NewTaskWithStar\Unit1.pas=C:\Projects\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.626,C:\Test\NewTaskWithStar\Project1.dproj=C:\Projects\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.481,=C:\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.626,C:\Projects\Project1.dproj=C:\Test\NewTaskWithStar\Project1.dproj</Transaction>
+    <Transaction>2021.03.30 18:22:20.511,=C:\Test\TaskWithStarFromGit\ModelSupport_Project1\default.txvpck</Transaction>
   </Transactions>
 	<ActiveMobileDevice>
 		<NoProfile iOSSimulator="iPhone5"/>

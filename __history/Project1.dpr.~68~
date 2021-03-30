@@ -9,15 +9,9 @@ uses
   Unit1 in 'Unit1.pas';
 
 var
-  x,i : integer;
-  a : array of string;
-  z : real;
-  y : double;
-  w : string;
-//  Server: TServer;
   Count : TCount;
-  //Engineer : TServiceEngineer;
-
+  i : integer;
+  str: string;
   begin
   try
     Count := TCount.Create();
@@ -26,15 +20,16 @@ var
     Count.GetExperience();
     Count.GetBill();
     Count.GetModel();
-
     Count.GetServiceDate();
-
     Count.GetUpTime();
-
+    Count.SaveFromText();
+    for str in Count.ServiceEngineer.FName do
+    Writeln('Сотрудники: ' + str);
     Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
     Writeln('Стаж: ' + floattostr(Count.ServiceEngineer.FExperience));
     Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
-    Writeln('Модель Сервера: ' + Count.Server.FModel);
+    for str in Count.Server.FModel do
+    Writeln('Модель Сервера: ' + str);
     Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
     Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
     readln;

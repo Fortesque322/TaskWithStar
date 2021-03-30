@@ -15,29 +15,30 @@ type
   TServiceCentr = record
     FDetails : array of string;
     FDeliveryTimeDay : integer;
-    FBill : double;
+    FBill : integer;
   end;
 
   TServiceEngineer = record
     FName : array of string;
-    FSalary : real;
-    FExperience : real;
+    FSalary : integer;
+    FExperience : integer;
   end;
 
   TCount = class
     Server : TServer;
     ServiceCentr : TServiceCentr;
     ServiceEngineer : TServiceEngineer;
-    procedure GetModel();
-    procedure GetUpTime();
-    procedure GetServiceDate();
-    procedure GetDetails();
-    procedure GetDeliveryTime();
-    procedure GetBill();
-    procedure GetEngineerName();
-    procedure GetSalary();
-    procedure GetExperience();
+    procedure SetModel();
+    procedure SetUpTime();
+    procedure SetServiceDate();
+    procedure SetDetails();
+    procedure SetDeliveryTime();
+    procedure SetBill();
+    procedure SetEngineerName();
+    procedure SetSalary();
+    procedure SetExperience();
     procedure SaveFromText();
+    procedure ReadFromText();
     function AsBytes : TBytes;
     procedure SetBytes(Buf: Tbytes);
     constructor Create();
@@ -63,16 +64,28 @@ begin
 
 end;
 
-procedure TCount.GetBill();
+procedure TCount.ReadFromText;
   var
-    Price : double;
+    TextRead: TextFile; 
+  begin
+    AssignFile(TextRead, 'C:\distr\Record.txt');
+    Reset(TextRead);
+    while not eof(TextRead) do
+    Read(TextRead);
+    Close(TextRead);
+  end;
+
+procedure TCount.SetBill();
+  var
+    Price : integer;
   begin
     Writeln('Счет: ');
     readln(Price);
     ServiceCentr.FBill := Price;
+    //можно попробовать пихнуть сюда запись в файл исключая доп функцию
   end;
 
-procedure TCount.GetDeliveryTime;
+procedure TCount.SetDeliveryTime;
   var
     DeliveryDay : integer;
   begin
@@ -81,12 +94,12 @@ procedure TCount.GetDeliveryTime;
     ServiceCentr.FDeliveryTimeDay := DeliveryDay;
   end;
 
-procedure TCount.GetDetails;
+procedure TCount.SetDetails;
   begin
 
   end;
 
-procedure TCount.GetEngineerName();
+procedure TCount.SetEngineerName();
   var
     i, Quantity : integer;
     x: string;
@@ -94,49 +107,51 @@ procedure TCount.GetEngineerName();
     i := 0;
     Writeln('Кол-во сотурдников: ');
     readln(Quantity);
-    SetLength(ServiceEngineer.FName, Quantity);
+//    SetLength(ServiceEngineer.FName, 0);
     Writeln('Введите имена: ');
     for I := 0 to Quantity-1 do
     begin
       readln(x);
-      ServiceEngineer.FName[i]:= x;
+      ServiceEngineer.FName := ServiceEngineer.FName + [x];
     end;
   end;
 
-procedure TCount.GetExperience();
+procedure TCount.SetExperience();
   var
-    Exp: real;
+    Exp: integer;
   begin
     Writeln('Стаж: ');
     Readln(Exp);
     ServiceEngineer.FExperience := Exp;
   end;
 
-procedure TCount.GetModel();
+procedure TCount.SetModel();
   var
     i,x : integer;
+    s : string;
   begin
     i := 0;
     Writeln('Количество серверов: ');
     readln(x);
-    SetLength(Server.FModel, x);
+//    SetLength(Server.FModel, x);   // Почитать
     Writeln('Введите модели: ');
     for I := 0 to x-1 do
     begin
-      readln(Server.FModel[i]);
+      readln(s);
+      Server.FModel := Server.FModel + [s];
     end;
   end;
 
-procedure TCount.GetSalary();
+procedure TCount.SetSalary();
   var
-    Salary : real;
+    Salary : integer;
   begin
     Writeln('ЗП: ');
     readln(Salary);
     ServiceEngineer.FSalary := Salary;
   end;
 
-procedure TCount.GetServiceDate();
+procedure TCount.SetServiceDate();
   var
     DateDay: integer;
   begin
@@ -145,7 +160,7 @@ procedure TCount.GetServiceDate();
     Server.FServiceDate:= DateDay;
   end;
 
-procedure TCount.GetUpTime();
+procedure TCount.SetUpTime();
   var
     Days : integer;
   begin
@@ -157,14 +172,28 @@ procedure TCount.GetUpTime();
 procedure TCount.SaveFromText;
   var
     TextForSave : TextFile;
+    i : integer;
+    str : string;
   begin
     AssignFile(TextForSave, 'C:\Distr\Record.txt');
     if not FileExists('C:\Distr\Record.txt') then
       Rewrite(TextForSave);
     Append(TextForSave);
-    Writeln(TextForSave, Server.FModel[0]);   //Неверная запись в файл
+    //Engineer
+    for str in ServiceEngineer.FName do
+    Writeln(TextForSave, str);
+    Writeln(TextForSave, ServiceEngineer.FSalary);
+    Writeln(TextForSave, ServiceEngineer.FExperience); 
+    //Model   
+    for str in Server.FModel do
+    Writeln(TextForSave, str);
     Writeln(TextForSave, Server.FUptimeDay);
     Writeln(TextForSave, Server.FServiceDate);
+    //Service
+    for str in ServiceCentr.FDetails do
+    Writeln(TextForSave, str);
+    Writeln(TextForSave, ServiceCentr.FDeliveryTimeDay);
+    Writeln(TextForSave, ServiceCentr.FBill);
     Close(TextForSave);
   end;
 
