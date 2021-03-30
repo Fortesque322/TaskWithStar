@@ -21,31 +21,31 @@ var
   begin
   try
     Count := TCount.Create();
-      Writeln('ЗП: ');
-      readln(z);
-      Count.GetSalary(z);
-      Writeln('Стаж: ');
-      Readln(z);
-      Count.GetExperience(z);
-      Writeln('Счет: ');
-      readln(y);
-      Count.GetBill(y);
-      Writeln('Модель: ');
-      readln(w);
-      Count.GetModel(w);
+    Count.GetEngineerName();
+    Count.GetSalary();
 
+    Count.GetExperience(z);
+  
+    Count.GetBill(y);
+    Writeln('Модель: ');
+    readln(w);
+    Count.GetModel(w);
+    Writeln('Через сколько дней обсуживание: ');
+    readln(x);
+    Count.GetServiceDate(x);
+    Writeln('Время рааботы сервера (Дни): ');
+    readln(x);
+    Count.GetUpTime(x);
 
-
-      //readln(x);
-//    readln(a[i]);
-//    Count.GetEngineerName(x, a);
     Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
     Writeln('Стаж: ' + floattostr(Count.ServiceEngineer.FExperience));
     Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
     Writeln('Модель Сервера: ' + Count.Server.FModel);
+    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
+    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
+    readln;
+//    sleep(2000);
 
-
-    sleep(2000);
   except
     on E: Exception do
       Writeln(E.ClassName, ': ', E.Message);

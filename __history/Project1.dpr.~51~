@@ -21,6 +21,14 @@ var
   begin
   try
     Count := TCount.Create();
+    Count.GetEngineerName();
+
+//      begin
+//      SetLength(a,10);
+//      for i := 0 to 10 do
+//      readln(a[i]);           // разобраться с вводом массива
+//      end;
+
     Writeln('ЗП: ');
     readln(z);
     Count.GetSalary(z);
@@ -39,20 +47,15 @@ var
     Writeln('Время рааботы сервера (Дни): ');
     readln(x);
     Count.GetUpTime(x);
-//      begin
-//      for i := 0 to 10 do
-//
-//      readln(a[i]);           // разобраться с вводом массива
-//      end;
-//    Count.GetEngineerName(x, a);
-    readln;
+
     Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
     Writeln('Стаж: ' + floattostr(Count.ServiceEngineer.FExperience));
     Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
     Writeln('Модель Сервера: ' + Count.Server.FModel);
     Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
     Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
-    sleep(2000);
+    readln;
+//    sleep(2000);
 
   except
     on E: Exception do

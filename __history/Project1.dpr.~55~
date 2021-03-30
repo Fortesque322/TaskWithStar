@@ -22,11 +22,11 @@ var
     Count.GetModel();
     Count.GetServiceDate();
     Count.GetUpTime();
-    Writeln('Сотрудники: ' + Count.ServiceEngineer.FName[i]);  //отображает только первый элемент
+    Writeln('Сотрудники: ' + Count.ServiceEngineer.FName[i]);
     Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
     Writeln('Стаж: ' + floattostr(Count.ServiceEngineer.FExperience));
     Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
-    Writeln('Модель Сервера: ' + Count.Server.FModel[i]);
+    Writeln('Модель Сервера: ' + Count.Server.FModel);
     Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
     Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
     readln;

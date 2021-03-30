@@ -7,14 +7,14 @@ uses
 
 type
   TServer = record
-    FModel: array of string;
+    FModel: string;
     FUptimeDay :integer;
     FServiceDate: integer;
   end;
 
   TServiceCentr = record
     FDetails : array of string;
-    FDeliveryTimeDay : integer;
+    FDeliveryTimeDay : array of integer;
     FBill : double;
   end;
 
@@ -28,15 +28,13 @@ type
     Server : TServer;
     ServiceCentr : TServiceCentr;
     ServiceEngineer : TServiceEngineer;
+    procedure GetSalary();
+    procedure GetExperience();
+    procedure GetEngineerName();
+    procedure GetBill();
     procedure GetModel();
     procedure GetUpTime();
     procedure GetServiceDate();
-    procedure GetDetails();
-    procedure GetDeliveryTime();
-    procedure GetBill();
-    procedure GetEngineerName();
-    procedure GetSalary();
-    procedure GetExperience();
     function AsBytes : TBytes;
     procedure SetBytes(Buf: Tbytes);
     constructor Create();
@@ -71,34 +69,19 @@ procedure TCount.GetBill();
     ServiceCentr.FBill := Price;
   end;
 
-procedure TCount.GetDeliveryTime;
+procedure TCount.GetEngineerName(); //Quantity: integer; NameEngineer:array of string
   var
-    DeliveryDay : integer;
-  begin
-    Writeln('Дней до доставки: : ');
-    readln(DeliveryDay);
-    ServiceCentr.FDeliveryTimeDay := DeliveryDay;
-  end;
-
-procedure TCount.GetDetails;
-  begin
-
-  end;
-
-procedure TCount.GetEngineerName();
-  var
-    i, Quantity : integer;
-    x: string;
+    i,x, Quantity : integer;
   begin
     i := 0;
     Writeln('Кол-во сотурдников: ');
-    readln(Quantity);
+    readln(x);
+    Quantity:= x ;
     SetLength(ServiceEngineer.FName, Quantity);
     Writeln('Введите имена: ');
     for I := 0 to Quantity-1 do
     begin
-      readln(x);
-      ServiceEngineer.FName[i]:= x;
+      readln(ServiceEngineer.FName[i]);
     end;
   end;
 
@@ -113,17 +96,11 @@ procedure TCount.GetExperience();
 
 procedure TCount.GetModel();
   var
-    i,x : integer;
+    Model : string;
   begin
-    i := 0;
-    Writeln('Количество серверов: ');
-    readln(x);
-    SetLength(Server.FModel, x);
-    Writeln('Введите модели: ');
-    for I := 0 to x-1 do
-    begin
-      readln(Server.FModel[i]);
-    end;
+    Writeln('Модель: ');
+    readln(Model);
+    Server.FModel:= Model;
   end;
 
 procedure TCount.GetSalary();

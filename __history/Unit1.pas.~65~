@@ -85,7 +85,7 @@ procedure TCount.GetDetails;
 
   end;
 
-procedure TCount.GetEngineerName();
+procedure TCount.GetEngineerName(); //Quantity: integer; NameEngineer:array of string
   var
     i, Quantity : integer;
     x: string;

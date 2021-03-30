@@ -85,10 +85,9 @@ procedure TCount.GetDetails;
 
   end;
 
-procedure TCount.GetEngineerName();
+procedure TCount.GetEngineerName(); //Quantity: integer; NameEngineer:array of string
   var
-    i, Quantity : integer;
-    x: string;
+    i,x, Quantity : integer;
   begin
     i := 0;
     Writeln('Кол-во сотурдников: ');
@@ -97,8 +96,7 @@ procedure TCount.GetEngineerName();
     Writeln('Введите имена: ');
     for I := 0 to Quantity-1 do
     begin
-      readln(x);
-      ServiceEngineer.FName[i]:= x;
+      readln(ServiceEngineer.FName[i]);
     end;
   end;
 
