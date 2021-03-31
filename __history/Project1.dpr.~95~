@@ -28,7 +28,7 @@ type
   end;
 
 var
-  test,test1: TTest;
+  test: TTest;
   data: TBytes;
   Count : TCount;
   i : integer;
@@ -40,13 +40,12 @@ var
   size: integer;
 begin
   size :=Length(value2);
-  Result := [Value1] + TEncoding.UTF8.GetBytes(value2);
+  Result := [PInteger(Value1)^} + [PInteger(size)^] + TEncoding.UTF8.GetBytes(value2);
 end;
 
 procedure TTest.SetBytes(const ABytes: TBytes);
 begin
-  Value1 := ABytes[0];
-  Value2 :=  TEncoding.UTF8.GetString(Copy(Data,1,length(data)-1));
+
 end;
 
 { TFileLayer }
@@ -76,7 +75,6 @@ begin
     test.Value1 := 1;
     test.value2 := '1111111';
     data:= test.AsBytes;
-    test1.SetBytes(data);
 //    Count := TCount.Create();
 //    Count.SetEngineerName();
 //    Count.SetSalary();

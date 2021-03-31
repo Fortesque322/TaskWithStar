@@ -105,54 +105,114 @@ procedure TCount.SetDetails;
 
 procedure TCount.SetEngineerName();
   var
-    i, Quantity : integer;
-    x: string;
+    i ,y : integer;
+    x, Quantity: string;
+    flag: boolean;
   begin
+    flag := true;
     i := 0;
     Writeln('Кол-во сотурдников: ');
-    readln(Quantity);                             //Вводим размер массива
-//    SetLength(ServiceEngineer.FName, 0);        //После вызоыва конструктора прошла инициализация полей
-    Writeln('Введите имена: ');                   
-    for I := 0 to Quantity-1 do
+    readln(Quantity);                              //Вводим размер массива
+    try
+      Y:= StrToInt(Quantity) - 1;
+    except
+      Writeln('No');
+      flag := False;
+    end;
+
+    if not flag then
+    begin
+      SetEngineerName;                    //рекурсия
+      exit;
+    end;
+
+    Writeln('Введите имена: ');
+    for I := 0 to y do
     begin
       readln(x);                                  //Ввод эодного лемента массива
       ServiceEngineer.FName := ServiceEngineer.FName + [x];  // Присваивание Фнейму его же значение плюс новый элемент массива веденный с клавиатуры
     end;
+
   end;
 
 procedure TCount.SetExperience();
   var
-    Exp: integer;
+    Exp: string;
+    number : integer;
+    flag: boolean;
   begin
-    Writeln('Стаж: ');
+    flag:= true;
     Readln(Exp);
-    ServiceEngineer.FExperience := Exp;
+
+    try
+      number:= StrToInt(Exp);
+    except
+      Writeln('Введены некоректные данные:');
+      flag := false;
+    end;
+
+    if not flag  then
+     begin
+     SetExperience;
+     exit;
+     end;
+
+    Writeln('Стаж: ');
+    ServiceEngineer.FExperience := number;
   end;
 
 procedure TCount.SetModel();
   var
-    i,x : integer;
+    i,x,number : integer;
     s : string;
+    flag: boolean;
   begin
     i := 0;
+    flag := true;
     Writeln('Количество серверов: ');
-    readln(x);
-//    SetLength(Server.FModel, x);   // Почитать
+    readln(s);
+      try
+        number:= StrToInt(s) - 1;
+      except
+        Writeln('Введены некоректные данные:');
+        flag:= false;
+      end;
+
+    if not flag then
+      begin
+        SetModel;
+        exit
+      end;
+
     Writeln('Введите модели: ');
-    for I := 0 to x-1 do
-    begin
-      readln(s);
-      Server.FModel := Server.FModel + [s];
-    end;
+    for I := 0 to number do
+    readln(s);
+    Server.FModel := Server.FModel + [s];
   end;
 
 procedure TCount.SetSalary();
   var
-    Salary : integer;
+    Salary : string;
+    number : integer;
+    flag: boolean;
   begin
+    flag := true;
     Writeln('ЗП: ');
     readln(Salary);
-    ServiceEngineer.FSalary := Salary;
+    try
+      number:= StrToInt(Salary);
+    except
+      Writeln('Введены некоректные данные:');
+      flag:= false;
+    end;
+
+    if not flag then
+      begin
+        SetSalary;
+        exit;
+      end;
+
+    ServiceEngineer.FSalary := number;
   end;
 
 procedure TCount.SetServiceDate();
@@ -161,6 +221,11 @@ procedure TCount.SetServiceDate();
   begin
     Writeln('Через сколько дней обсуживание: ');
     readln(DateDay);
+    try
+
+    except
+
+    end;
     Server.FServiceDate:= DateDay;
   end;
 

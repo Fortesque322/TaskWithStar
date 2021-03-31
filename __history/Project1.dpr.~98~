@@ -28,7 +28,7 @@ type
   end;
 
 var
-  test,test1: TTest;
+  test: TTest;
   data: TBytes;
   Count : TCount;
   i : integer;
@@ -76,7 +76,6 @@ begin
     test.Value1 := 1;
     test.value2 := '1111111';
     data:= test.AsBytes;
-    test1.SetBytes(data);
 //    Count := TCount.Create();
 //    Count.SetEngineerName();
 //    Count.SetSalary();
