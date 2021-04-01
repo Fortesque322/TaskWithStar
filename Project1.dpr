@@ -31,6 +31,7 @@ var
   test,test1: TTest;
   data: TBytes;
   Count : TCount;
+  Layer: TFileLayer;
   i : integer;
   str: string;
   { TTest }
@@ -67,15 +68,14 @@ begin
 end;
 
 procedure TFileLayer.SetData(const ABytes: TBytes);
-begin
+  begin
 
-end;
+  end;
 
 begin
   try
-    test.Value1 := 1;
-    test.value2 := '1111111';
-    data:= test.AsBytes;
+    Layer:= TFileLayer.Create;
+      data:= test.AsBytes;
     test1.SetBytes(data);
 //    Count := TCount.Create();
 //    Count.SetEngineerName();
@@ -87,7 +87,7 @@ begin
 //    Count.SetUpTime();
 //    Count.SaveToText();
   //  Count.SaveToNoType();
-    Count.ReadFromText();
+//    Count.ReadFromText();
 //    for str in Count.ServiceEngineer.FName do
 //    Writeln('Сотрудники: ' + str);
 //    Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));

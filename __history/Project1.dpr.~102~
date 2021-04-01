@@ -28,7 +28,8 @@ type
   end;
 
 var
-  test: TTest;
+  test,test1: TTest;
+  data: TBytes;
   Count : TCount;
   i : integer;
   str: string;
@@ -39,12 +40,13 @@ var
   size: integer;
 begin
   size :=Length(value2);
-  Result := [Value1] + [size] + TEncoding.UTF8.GetBytes(value2);
+  Result := [Value1] + TEncoding.UTF8.GetBytes(value2);
 end;
 
 procedure TTest.SetBytes(const ABytes: TBytes);
 begin
-
+  Value1 := ABytes[0];
+  Value2 :=  TEncoding.UTF8.GetString(Copy(Data,1,length(data)-1));
 end;
 
 { TFileLayer }
@@ -65,12 +67,16 @@ begin
 end;
 
 procedure TFileLayer.SetData(const ABytes: TBytes);
-begin
+  begin
 
-end;
+  end;
 
 begin
   try
+    test.Value1 := 1;
+    test.value2 := '1111111';
+    data:= test.AsBytes;
+    test1.SetBytes(data);
 //    Count := TCount.Create();
 //    Count.SetEngineerName();
 //    Count.SetSalary();
@@ -81,7 +87,7 @@ begin
 //    Count.SetUpTime();
 //    Count.SaveToText();
   //  Count.SaveToNoType();
-    Count.ReadFromText();
+//    Count.ReadFromText();
 //    for str in Count.ServiceEngineer.FName do
 //    Writeln('Сотрудники: ' + str);
 //    Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
