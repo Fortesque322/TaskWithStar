@@ -22,6 +22,7 @@ begin
 //    Count.SetExperience();
 //    Count.SetBill();
     Count.SetModel();
+    Count.Server.AsBytes;
     Count.Server.SaveRecordServer;
 //    Count.SetServiceDate();
 //    Count.SetDetails();
@@ -41,8 +42,8 @@ begin
 //    Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
 //    for str in Count.Server.FModel do
 //    Writeln('Модель Сервера: ' + str);
-//    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
-//    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
+    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
+    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
     writeln('AnyKey');
     readln;
 

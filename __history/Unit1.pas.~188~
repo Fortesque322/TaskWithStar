@@ -50,6 +50,8 @@ type
     procedure SaveToText();
     procedure SaveToNoType();
     procedure ReadFromText();
+//    function AsBytes : TBytes;
+//    procedure SetBytes(Buf: Tbytes);
     constructor Create();
     destructor Destroy;
   end;

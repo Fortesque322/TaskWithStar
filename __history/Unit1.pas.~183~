@@ -10,24 +10,32 @@ type
     FModel: array of string;
     FUptimeDay :integer;
     FServiceDate: integer;
+    function AsBytes : TBytes;
+    procedure SetBytes(buf:TBytes);
+    procedure SaveRecordServer();
   end;
 
   TServiceCentr = record
     FDetails : array of string;
     FDeliveryTimeDay : integer;
     FBill : integer;
+    function AsBytes : TBytes;
+    procedure SetBytes(buf:TBytes);
   end;
 
   TServiceEngineer = record
     FName : array of string;
     FSalary : integer;
     FExperience : integer;
+    function AsBytes : TBytes;
+    procedure SetBytes(buf:TBytes);
   end;
 
   TCount = class
     Server : TServer;
     ServiceCentr : TServiceCentr;
     ServiceEngineer : TServiceEngineer;
+    Count: TCount;
     procedure SetModel();
     procedure SetUpTime();
     procedure SetServiceDate();
@@ -40,23 +48,13 @@ type
     procedure SaveToText();
     procedure SaveToNoType();
     procedure ReadFromText();
-    function AsBytes : TBytes;
-    procedure SetBytes(Buf: Tbytes);
+//    function AsBytes : TBytes;
+//    procedure SetBytes(Buf: Tbytes);
     constructor Create();
     destructor Destroy;
   end;
 
 implementation
-
-{ TCount }
-
-function TCount.AsBytes: TBytes;
-  var
-    size:integer;
-  begin
-    size:= Length(Server.FModel);
-    Result := [Server.FServiceDate] + [server.FUptimeDay] + TEncoding.UTF8.GetBytes(Self.Server.FModel);
-  end;
 
 constructor TCount.Create();
 begin
@@ -102,9 +100,37 @@ procedure TCount.SetDeliveryTime;
   end;
 
 procedure TCount.SetDetails;
+    var
+    i ,y : integer;
+    x, Quantity: string;
+    flag: boolean;
   begin
+    flag := true;
+    i := 0;
+    Writeln('Кол-во деталей: ');
+    readln(Quantity);
+    try
+      Y:= StrToInt(Quantity) - 1;
+    except
+      Writeln('No');
+      flag := False;
+    end;
+
+    if not flag then
+    begin
+      SetEngineerName;
+      exit;
+    end;
+
+    Writeln('Введите наименование: ');
+    for I := 0 to y do
+    begin
+      readln(x);
+      ServiceCentr.FDetails := ServiceCentr.FDetails + [x];
+    end;
 
   end;
+
 
 procedure TCount.SetEngineerName();
   var
@@ -145,6 +171,7 @@ procedure TCount.SetExperience();
     flag: boolean;
   begin
     flag:= true;
+    Writeln('Стаж: ');
     Readln(Exp);
 
     try
@@ -160,7 +187,6 @@ procedure TCount.SetExperience();
      exit;
      end;
 
-    Writeln('Стаж: ');
     ServiceEngineer.FExperience := number;
   end;
 
@@ -279,11 +305,164 @@ procedure TCount.SaveToNoType;
     if not FileExists('C:\distr\NoTypeFile') then
       Rewrite(TextForByte,1);
     Reset(TextForByte,1);
-    BlockWrite(TextForByte, buf, count);
+//    buf:=AsBytes;
+    BlockWrite(TextForByte, buf[0], Length(buf));
     Close(TextForByte);
   end;
 
-procedure TCount.SetBytes(Buf: Tbytes);
+//procedure TCount.SetBytes(Buf: Tbytes);
+//  var
+//  Counter, size:integer;
+//  TextForByte : file;
+//  begin
+//    buf:=0;
+//    Counter:= 0;
+//    AssignFile(TextForByte, 'C:\distr\NoTypeFile');
+//    Reset(TextForByte,1);
+//    BlockRead(TexTForByte, buf[0], Length(buf));
+//    Move(buf[Counter],Server.FUptimeDay, sizeof(Server.FUptimeDay));
+//    inc(counter,sizeof(Server.FUptimeDay));
+//
+//    Move(buf[Counter], Server.FServiceDate, sizeof(Server.FServiceDate));
+//    inc(Counter, sizeof(Server.FServiceDate));
+
+//    Move(buf[Counter], Server.FServiceDate, sizeof(Server.FServiceDate));
+//    inc(Counter, sizeof(integer));
+//    Close(TextForByte);
+//  end;
+
+{ TServer }
+
+function TServer.AsBytes: TBytes;
+  var
+    Counter, size,ArrayLength: integer;
+    str:string;
+    data: TBytes;
+  begin
+    ArrayLength:= Length(FModel);
+    size := SizeOF(ArrayLength) + SizeOF(FUptimeDay) + SizeOF(FServiceDate);
+    for str in FModel do
+    begin
+      inc(size,Length(str)+SizeOf(integer));
+    end;
+    setlength(result,size);
+
+    Counter :=0;
+
+    Move(arrayLength,Result[counter],sizeOf(arrayLength));
+    inc(counter,sizeOf(arrayLength));
+
+    for str in FModel do
+    begin
+      Size := Length(str);
+      Move(Size,Result[counter],sizeOf(Size));
+      inc(counter,SizeOf(Size));
+      data := TENcoding.UTF8.GetBytes(str);
+      Move(data[0],Result[counter],length(data));
+      inc(counter,length(data));
+    end;
+
+    Move(FUptimeDay,Result[counter],sizeOf(FUptimeDay));
+    inc(counter,sizeOf(FUptimeDay));
+    Move(FServiceDate,Result[counter],sizeOf(FServiceDate));
+  end;
+
+procedure TServer.SaveRecordServer;
+  var
+    ByteFileServer : File;
+    count:integer;
+    buf : TBytes;
+  begin
+    AssignFile(ByteFileServer,'C:\distr\NoTypeServer');
+    if not FileExists('C:\distr\NoTypeServer') then
+      Rewrite(ByteFileServer,1);
+    Reset(ByteFileServer,1);
+    buf:=Self.AsBytes;
+    BlockWrite(ByteFileServer, buf[0], Length(buf));
+    Close(ByteFileServer);
+  end;
+
+procedure TServer.SetBytes(buf: TBytes);
+begin
+
+end;
+
+{ TServiceCentr }
+
+function TServiceCentr.AsBytes: TBytes;
+    var
+    Counter, size, ArrayLength: integer;
+    str: string;
+    data: TBytes;
+  begin
+    ArrayLength:= Length(FDetails);     //узнаем количество элементов в массиве
+    size:= SizeOf(ArrayLength) + SizeOf(FDeliveryTimeDay) + SizeOf(FBill); //узнаю размер массива в байтах
+    for str in FDetails do       //перебираем элементы в Фдетеилс
+    begin
+      inc(size,Length(str)+SizeOf(integer));
+    end;
+    setlength(result,size);   // назначаем размерность массива на значения сизе
+    Counter:= 0;       //ставим счетчик на первый элемент массива
+    Move(arrayLength,Result[counter],sizeOf(arrayLength));
+    inc(counter,sizeOf(arrayLength));          // увеличиваем счетчик
+    for str in FDetails do
+      begin
+        Size := Length(str);
+        Move(Size,Result[counter],sizeOf(Size));
+        inc(counter,SizeOf(Size));
+      end;
+    data:= TEncoding.UTF8.GetBytes(str);      //записываем строку в дату
+    Move(data[0],Result[counter],length(data));
+    inc(counter,length(data));
+    Move(FDeliveryTimeDay,Result[counter],sizeOf(FDeliveryTimeDay));
+    inc(counter,sizeOf(FDeliveryTimeDay));
+    Move(FBill,Result[counter],sizeOf(FBill));
+  end;
+
+  procedure TServiceCentr.SetBytes(buf: TBytes);
+begin
+
+end;
+
+{ TServiceEngineer }
+
+function TServiceEngineer.AsBytes: TBytes;
+    var
+    Counter, size,ArrayLength: integer;
+    str:string;
+    data: TBytes;
+  begin
+    ArrayLength:= Length(FName);
+    size := SizeOF(ArrayLength) + SizeOF(FSalary) + SizeOF(FExperience);
+    for str in FName do
+    begin
+      inc(size,Length(str)+SizeOf(integer));
+    end;
+    setlength(result,size);
+
+    Counter :=0;
+
+    Move(arrayLength,Result[counter],sizeOf(arrayLength));
+    inc(counter,sizeOf(arrayLength));
+
+    for str in FName do
+    begin
+      Size := Length(str);
+      Move(Size,Result[counter],sizeOf(Size));
+      inc(counter,SizeOf(Size));
+
+      data := TENcoding.UTF8.GetBytes(str);
+      Move(data[0],Result[counter],length(data));
+      inc(counter,length(data));
+    end;
+
+    Move(FSalary,Result[counter],sizeOf(FSalary));
+    inc(counter,sizeOf(FSalary));
+
+    Move(FExperience,Result[counter],sizeOf(FExperience));
+  end;
+
+procedure TServiceEngineer.SetBytes(buf: TBytes);
 begin
 
 end;

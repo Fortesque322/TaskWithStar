@@ -24,7 +24,6 @@ type
     FPrice: integer;
     FName: string;
     FNumber: integer;
-    procedure SetValue();
     function AsBytes: TBytes;
     procedure SetBytes(const ABytes: TBytes);
   end;
@@ -52,15 +51,6 @@ begin
   FName :=  TEncoding.UTF8.GetString(Copy(Data,1,length(data)-1));
 end;
 
-procedure TTest.SetValue;
-  begin
-    Writeln('Name: ');
-    readln(FName);
-    Writeln('Price: ');
-    readln(FPrice);
-    Writeln('Number: ');
-    readln(FNumber);
-  end;
 
 { TFileLayer }
 
@@ -97,8 +87,9 @@ begin
     Count.SaveToText();
     Count.AsBytes();
     Count.SaveToNoType();
-    Count.Create;
-//    Count.SetBytes();
+    Count.Free;
+
+    Count.SetBytes(data);
 
 //    Count.ReadFromText();
 //    for str in Count.ServiceEngineer.FName do
@@ -108,9 +99,8 @@ begin
 //    Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
 //    for str in Count.Server.FModel do
 //    Writeln('Модель Сервера: ' + str);
-//    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
-//    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
-//
+    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
+    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
     writeln('AnyKey');
     readln;
 

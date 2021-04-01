@@ -87,8 +87,8 @@ begin
     Count.SaveToText();
     Count.AsBytes();
     Count.SaveToNoType();
-    Count.Create;
-//    Count.SetBytes();
+    TCount.Create();
+    Count.SetBytes(data);
 
 //    Count.ReadFromText();
 //    for str in Count.ServiceEngineer.FName do
@@ -98,9 +98,8 @@ begin
 //    Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
 //    for str in Count.Server.FModel do
 //    Writeln('Модель Сервера: ' + str);
-//    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
-//    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
-//
+    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
+    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
     writeln('AnyKey');
     readln;
 

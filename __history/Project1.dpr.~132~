@@ -17,21 +17,20 @@ var
 begin
   try
     Count := TCount.Create();
-//    Count.SetEngineerName();
-//    Count.SetSalary();
-//    Count.SetExperience();
-//    Count.SetBill();
+    Count.SetEngineerName();
+    Count.SetSalary();
+    Count.SetExperience();
+    Count.SetBill();
     Count.SetModel();
-    Count.Server.SaveRecordServer;
-//    Count.SetServiceDate();
-//    Count.SetDetails();
-//    Count.SetUpTime();
+    Count.SetServiceDate();
+    Count.SetDetails();
+    Count.SetUpTime();
 
-//    Count.SaveToText();
+    Count.SaveToText();
 
-//    Count.SaveToNoType();
+    Count.SaveToNoType();
 
-//    TCount.Create();
+    TCount.Create();
 
 //    Count.ReadFromText();
 //    for str in Count.ServiceEngineer.FName do
@@ -41,8 +40,8 @@ begin
 //    Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
 //    for str in Count.Server.FModel do
 //    Writeln('Модель Сервера: ' + str);
-//    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
-//    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
+    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
+    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
     writeln('AnyKey');
     readln;
 
