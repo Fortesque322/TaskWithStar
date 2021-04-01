@@ -21,14 +21,16 @@ type
   end;
 
   TTest = record
-    Value1: integer;
-    value2: string;
+    FPrice: integer;
+    FName: string;
+    FNumber: integer;
+    procedure SetValue();
     function AsBytes: TBytes;
     procedure SetBytes(const ABytes: TBytes);
   end;
 
 var
-  test,test1: TTest;
+  test: TTest;
   data: TBytes;
   Count : TCount;
   Layer: TFileLayer;
@@ -40,15 +42,25 @@ function TTest.AsBytes: TBytes;
 var
   size: integer;
 begin
-  size :=Length(value2);
-  Result := [Value1] + TEncoding.UTF8.GetBytes(value2);
+  size :=Length(FName);
+  Result := [FPrice] + TEncoding.UTF8.GetBytes(FName);
 end;
 
 procedure TTest.SetBytes(const ABytes: TBytes);
 begin
-  Value1 := ABytes[0];
-  Value2 :=  TEncoding.UTF8.GetString(Copy(Data,1,length(data)-1));
+  FPrice := ABytes[0];
+  FName :=  TEncoding.UTF8.GetString(Copy(Data,1,length(data)-1));
 end;
+
+procedure TTest.SetValue;
+  begin
+    Writeln('Name: ');
+    readln(FName);
+    Writeln('Price: ');
+    readln(FPrice);
+    Writeln('Number: ');
+    readln(FNumber);
+  end;
 
 { TFileLayer }
 
@@ -74,22 +86,22 @@ procedure TFileLayer.SetData(const ABytes: TBytes);
 
 begin
   try
-      Layer:= TFileLayer.Create;
-      test.Value1 := 299;
-      test1.value2 := '111';
-      data:= test.AsBytes;
-    test1.SetBytes(data);
-//    Count := TCount.Create();
-//    Count.SetEngineerName();
-//    Count.SetSalary();
-//    Count.SetExperience();
-//    Count.SetBill();
-//    Count.SetModel();
-//    Count.SetServiceDate();
-//    Count.SetUpTime();
-//    Count.SaveToText();
-  //  Count.SaveToNoType();
+    Count := TCount.Create();
+    Count.SetEngineerName();
+    Count.SetSalary();
+    Count.SetExperience();
+    Count.SetBill();
+    Count.SetModel();
+    Count.SetServiceDate();
+    Count.SetUpTime();
+    Count.SaveToText();
+    Count.AsBytes();
+    Count.SaveToNoType();
+    Count.Create;
+    Count.SetBytes();
 //    Count.ReadFromText();
+
+
 //    for str in Count.ServiceEngineer.FName do
 //    Writeln('Сотрудники: ' + str);
 //    Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
@@ -100,6 +112,7 @@ begin
 //    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
 //    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
 //
+    writeln('AnyKey');
     readln;
 
   except

@@ -51,9 +51,12 @@ implementation
 { TCount }
 
 function TCount.AsBytes: TBytes;
-begin
-
-end;
+  var
+    size:integer;
+  begin
+    size:= Length(Server.FModel);
+    Result := [Server.FServiceDate] + [server.FUptimeDay];
+  end;
 
 constructor TCount.Create();
 begin
@@ -186,16 +189,33 @@ procedure TCount.SetModel();
 
     Writeln('Введите модели: ');
     for I := 0 to number do
+    readln(s);
     Server.FModel := Server.FModel + [s];
   end;
 
 procedure TCount.SetSalary();
   var
-    Salary : integer;
+    Salary : string;
+    number : integer;
+    flag: boolean;
   begin
+    flag := true;
     Writeln('ЗП: ');
     readln(Salary);
-    ServiceEngineer.FSalary := Salary;
+    try
+      number:= StrToInt(Salary);
+    except
+      Writeln('Введены некоректные данные:');
+      flag:= false;
+    end;
+
+    if not flag then
+      begin
+        SetSalary;
+        exit;
+      end;
+
+    ServiceEngineer.FSalary := number;
   end;
 
 procedure TCount.SetServiceDate();
@@ -204,6 +224,11 @@ procedure TCount.SetServiceDate();
   begin
     Writeln('Через сколько дней обсуживание: ');
     readln(DateDay);
+    try
+
+    except
+
+    end;
     Server.FServiceDate:= DateDay;
   end;
 
@@ -259,8 +284,8 @@ procedure TCount.SaveToNoType;
   end;
 
 procedure TCount.SetBytes(Buf: Tbytes);
-begin
-
-end;
+  begin
+    Server.FUptimeDay:= Buf[0];
+  end;
 
 end.

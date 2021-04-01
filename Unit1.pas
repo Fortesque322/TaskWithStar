@@ -51,9 +51,26 @@ implementation
 { TCount }
 
 function TCount.AsBytes: TBytes;
-begin
+  var
+    size, counter:integer;
+  begin
+    SetLength(Result, SizeOf(Server.FUptimeDay) + SizeOf(Server.FServiceDate) + Length(Server.FModel));
+    counter:=0;
 
-end;
+    Size:= Length(Server.FModel);
+    Move(size,Result[counter],sizeof(integer));
+    inc(counter,sizeof(integer));
+
+//    Move(TEncoding.UTF8.GetBytes(Server.FModel)[0],Result[Counter],Length(Server.FModel));
+//    inc(Counter,Length(Server.FModel));
+
+    Move(Server.FUptimeDay, Result[counter], sizeof(Server.FUptimeDay));
+    inc(counter,sizeof(Server.FUptimeDay));
+
+    Move(Server.FServiceDate, Result[counter], sizeof(Server.FServiceDate));
+    inc(counter,sizeof(Server.FServiceDate));
+
+  end;
 
 constructor TCount.Create();
 begin
@@ -142,6 +159,7 @@ procedure TCount.SetExperience();
     flag: boolean;
   begin
     flag:= true;
+    Writeln('Стаж: ');
     Readln(Exp);
 
     try
@@ -157,7 +175,6 @@ procedure TCount.SetExperience();
      exit;
      end;
 
-    Writeln('Стаж: ');
     ServiceEngineer.FExperience := number;
   end;
 
@@ -276,13 +293,25 @@ procedure TCount.SaveToNoType;
     if not FileExists('C:\distr\NoTypeFile') then
       Rewrite(TextForByte,1);
     Reset(TextForByte,1);
-    BlockWrite(TextForByte, buf, count);
+    buf:= AsBytes;
+    BlockWrite(TextForByte, buf[0], Length(buf));
     Close(TextForByte);
   end;
 
 procedure TCount.SetBytes(Buf: Tbytes);
-begin
+  var
+  Counter, size:integer;
+  begin
+    Counter:= 0;
+    Move(buf[Counter],Server.FUptimeDay, sizeof(Server.FUptimeDay));
+    inc(counter,sizeof(Server.FUptimeDay));
 
-end;
+    Move(buf[Counter], size, sizeof(integer));
+    inc(Counter, sizeof(integer));
+
+    Move(buf[Counter], Server.FServiceDate, sizeof(Server.FServiceDate));
+    inc(Counter, sizeof(integer));
+
+  end;
 
 end.

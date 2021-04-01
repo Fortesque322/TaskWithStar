@@ -192,11 +192,27 @@ procedure TCount.SetModel();
 
 procedure TCount.SetSalary();
   var
-    Salary : integer;
+    Salary : string;
+    number : integer;
+    flag: boolean;
   begin
+    flag := true;
     Writeln('ЗП: ');
     readln(Salary);
-    ServiceEngineer.FSalary := Salary;
+    try
+      number:= StrToInt(Salary);
+    except
+      Writeln('Введены некоректные данные:');
+      flag:= false;
+    end;
+
+    if not flag then
+      begin
+        SetSalary;
+        exit;
+      end;
+
+    ServiceEngineer.FSalary := number;
   end;
 
 procedure TCount.SetServiceDate();
@@ -205,6 +221,11 @@ procedure TCount.SetServiceDate();
   begin
     Writeln('Через сколько дней обсуживание: ');
     readln(DateDay);
+    try
+
+    except
+
+    end;
     Server.FServiceDate:= DateDay;
   end;
 
