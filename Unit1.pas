@@ -365,9 +365,10 @@ procedure TServer.SetBytes(buf: TBytes);
   var
     Counter, size: integer;
     str: string;
+    ByteFileServer : File;
   begin
+    buf:=AsBytes;
     Counter := 0;
-    buf:=buf;
 
     Move(buf[Counter],size, SizeOF(integer));
     inc(Counter,SizeOf(integer));

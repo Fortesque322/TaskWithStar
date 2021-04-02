@@ -364,15 +364,19 @@ procedure TServer.SaveRecordServer;
 procedure TServer.SetBytes(buf: TBytes);
   var
     Counter, size: integer;
+    str: string;
+    ByteFileServer : File;
   begin
     Counter := 0;
-    buf:=AsBytes;
+    AssignFile(ByteFileServer,'C:\distr\NoTypeServer');
+    Reset(ByteFileServer,1);
+    BlockRead(ByteFileServer, buf[0], Length(buf));
 
     Move(buf[Counter],size, SizeOF(integer));
     inc(Counter,SizeOf(integer));
 
     SetLength(FModel, size);
-    FModel := TEncoding.UTF8.GetString(Copy(buf,Counter,Size));
+    Move(buf[Counter],FModel,Size);
     inc(Counter,Length(Fmodel));
 
     Move(buf[Counter],FUptimeDay, SizeOF(FUptimeDay));
@@ -430,9 +434,25 @@ function TServiceCentr.AsBytes: TBytes;
   end;
 
 procedure TServiceCentr.SetBytes(buf: TBytes);
-begin
+  var
+    Counter, size: integer;
+    str: string;
+  begin
+    Counter := 0;
+    buf:=AsBytes;
 
-end;
+    Move(buf[Counter],size, SizeOF(integer));
+    inc(Counter,SizeOf(integer));
+
+    SetLength(FDetails, size);
+    Move(buf[Counter],FDetails,Size);
+    inc(Counter,Length(FDetails));
+
+    Move(buf[Counter],FDeliveryTimeDay, SizeOF(FDeliveryTimeDay));
+    inc(Counter,SizeOf(FDeliveryTimeDay));
+
+    Move(buf[Counter],FBill, SizeOF(FBill));
+  end;
 
 { TServiceEngineer }
 
@@ -488,8 +508,24 @@ procedure TServiceEngineer.SaveRecordEngineer;
   end;
 
 procedure TServiceEngineer.SetBytes(buf: TBytes);
-begin
+  var
+    Counter, size: integer;
+    str: string;
+  begin
+    Counter := 0;
+    buf:=AsBytes;
 
-end;
+    Move(buf[Counter],size, SizeOF(integer));
+    inc(Counter,SizeOf(integer));
+
+    SetLength(FName, size);
+    Move(buf[Counter],FName,Size);
+    inc(Counter,Length(FName));
+
+    Move(buf[Counter],FSalary, SizeOF(FSalary));
+    inc(Counter,SizeOf(FSalary));
+
+    Move(buf[Counter],FExperience, SizeOF(FExperience));
+  end;
 
 end.
