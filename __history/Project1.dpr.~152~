@@ -20,23 +20,23 @@ begin
 //    Count.SetEngineerName();
 //    Count.SetSalary();
 //    Count.SetExperience();
-//    Count.SetBill();
-    Count.SetModel();
-    Count.Server.SaveRecordServer;
+    Count.SetBill();
+    Count.SetDeliveryTime();
+//    Count.SetModel();
 //    Count.SetServiceDate();
 //    Count.SetDetails();
 //    Count.SetUpTime();
-
+//    Count.Server.SaveRecordServer;
+    Count.ServiceCentr.SaveRecordService;
+//    Count.ServiceEngineer.SaveRecordEngineer;
+//    Count.Server.SetBytes(data);
+    Count.ServiceCentr.SetBytes(data);
 //    Count.SaveToText();
-
-//    Count.SaveToNoType();
-
-//    TCount.Create();
-
 //    Count.ReadFromText();
-//    for str in Count.ServiceEngineer.FName do
-//    Writeln('Сотрудники: ' + str);
-//    Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
+
+    for str in Count.ServiceEngineer.FName do
+    Writeln('Сотрудники: ' + str);
+    Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
 //    Writeln('Стаж: ' + floattostr(Count.ServiceEngineer.FExperience));
 //    Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
 //    for str in Count.Server.FModel do

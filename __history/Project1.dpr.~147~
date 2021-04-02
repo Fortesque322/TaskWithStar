@@ -25,22 +25,23 @@ begin
     Count.SetServiceDate();
     Count.SetDetails();
     Count.SetUpTime();
-    Count.SaveToText();
-    Count.AsBytes();
-    Count.SaveToNoType();
-    TCount.Create();
-    Count.SetBytes(data);
+    Count.Server.SaveRecordServer;
+    Count.ServiceCentr.SaveRecordService;
+    Count.ServiceEngineer.SaveRecordEngineer;
+    Count.Server.SetBytes(data);
 
+//    Count.SaveToText();
 //    Count.ReadFromText();
-//    for str in Count.ServiceEngineer.FName do
-//    Writeln('Сотрудники: ' + str);
-//    Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
+
+    for str in Count.ServiceEngineer.FName do
+    Writeln('Сотрудники: ' + str);
+    Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
 //    Writeln('Стаж: ' + floattostr(Count.ServiceEngineer.FExperience));
 //    Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
 //    for str in Count.Server.FModel do
 //    Writeln('Модель Сервера: ' + str);
-    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
-    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
+//    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
+//    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
     writeln('AnyKey');
     readln;
 

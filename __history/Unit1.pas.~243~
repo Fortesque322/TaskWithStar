@@ -48,7 +48,6 @@ type
     procedure SetSalary();
     procedure SetExperience();
     procedure SaveToText();
-    procedure SaveToNoType();
     procedure ReadFromText();
     constructor Create();
     destructor Destroy;
@@ -295,21 +294,6 @@ procedure TCount.SaveToText;
     Close(TextForSave);
   end;
 
-procedure TCount.SaveToNoType;
-  var
-    TextForByte : File;
-    count:integer;
-    buf : TBytes;
-  begin
-    AssignFile(TextForByte,'C:\distr\NoTypeFile');
-    if not FileExists('C:\distr\NoTypeFile') then
-      Rewrite(TextForByte,1);
-    Reset(TextForByte,1);
-//    buf:=AsBytes;
-    BlockWrite(TextForByte, buf[0], Length(buf));
-    Close(TextForByte);
-  end;
-
 { TServer }
 
 function TServer.AsBytes: TBytes;
@@ -357,29 +341,37 @@ procedure TServer.SaveRecordServer;
       Rewrite(ByteFileServer,1);
     Reset(ByteFileServer,1);
     buf:=Self.AsBytes;
-    BlockWrite(ByteFileServer, buf[0], Length(buf));
+    BlockWrite(ByteFileServer, buf, Length(buf));
     Close(ByteFileServer);
   end;
 
 procedure TServer.SetBytes(buf: TBytes);
   var
     Counter, size: integer;
-    str: string;
+    ByteFileServer : File;
+    data: TBytes;
   begin
     Counter := 0;
-    buf:=AsBytes;
+    AssignFile(ByteFileServer, 'C:\distr\NoTypeServer');
+    FileMode := fmOpenRead;
+    Reset(ByteFileServer,1);
+
+    BlockRead(ByteFileServer,data,filesize(ByteFileServer));
+    SetLength(data,filesize(ByteFileServer));
 
     Move(buf[Counter],size, SizeOF(integer));
     inc(Counter,SizeOf(integer));
 
     SetLength(FModel, size);
-    Move(buf[Counter],FModel,Size);
+    Move(buf[Counter],FModel[0],Size);    //Ќеправильно вписываю данные в массив
     inc(Counter,Length(Fmodel));
 
     Move(buf[Counter],FUptimeDay, SizeOF(FUptimeDay));
     inc(Counter,SizeOf(FUptimeDay));
 
     Move(buf[Counter],FServiceDate, SizeOF(FServiceDate));
+
+    Close(ByteFileServer);
   end;
 
 { TServiceCentr }
@@ -426,7 +418,7 @@ function TServiceCentr.AsBytes: TBytes;
       Rewrite(ByteFileService,1);
     Reset(ByteFileService,1);
     buf:=Self.AsBytes;
-    BlockWrite(ByteFileService, buf[0], Length(buf));
+    BlockWrite(ByteFileService, buf, Length(buf));
     Close(ByteFileService);
   end;
 
@@ -434,12 +426,18 @@ procedure TServiceCentr.SetBytes(buf: TBytes);
   var
     Counter, size: integer;
     str: string;
+    ByteFileService : File;
+    data: TBytes;
   begin
     Counter := 0;
-    buf:=AsBytes;
+    AssignFile(ByteFileService,'C:\distr\NoTypeService');
+    FileMode:= fmOpenRead;
+    Reset(ByteFileService,1);
+    BlockRead(ByteFileService,data,filesize(ByteFileService));
+    SetLength(data,filesize(ByteFileService));
 
-    Move(buf[Counter],size, SizeOF(integer));
-    inc(Counter,SizeOf(integer));
+//    Move(buf[Counter],size, SizeOF(integer));
+//    inc(Counter,SizeOf(integer));
 
     SetLength(FDetails, size);
     Move(buf[Counter],FDetails,Size);
@@ -449,6 +447,7 @@ procedure TServiceCentr.SetBytes(buf: TBytes);
     inc(Counter,SizeOf(FDeliveryTimeDay));
 
     Move(buf[Counter],FBill, SizeOF(FBill));
+    close(ByteFileService);
   end;
 
 { TServiceEngineer }
@@ -500,17 +499,22 @@ procedure TServiceEngineer.SaveRecordEngineer;
       Rewrite(ByteFileEngineer,1);
     Reset(ByteFileEngineer,1);
     buf:=Self.AsBytes;
-    BlockWrite(ByteFileEngineer, buf[0], Length(buf));
+    BlockWrite(ByteFileEngineer, buf, Length(buf));
     Close(ByteFileEngineer);
   end;
 
 procedure TServiceEngineer.SetBytes(buf: TBytes);
   var
     Counter, size: integer;
-    str: string;
+    data: TBytes;
+    ByteFileEngineer: file;
   begin
     Counter := 0;
-    buf:=AsBytes;
+    AssignFile(ByteFileEngineer,'C:\distr\NoTypeEngineer');
+    FileMode:= fmOpenRead;
+    Reset(ByteFileEngineer,1);
+    SetLength(data,filesize(ByteFileEngineer));
+    BlockRead(ByteFileEngineer,data,filesize(ByteFileEngineer));
 
     Move(buf[Counter],size, SizeOF(integer));
     inc(Counter,SizeOf(integer));
@@ -523,6 +527,7 @@ procedure TServiceEngineer.SetBytes(buf: TBytes);
     inc(Counter,SizeOf(FSalary));
 
     Move(buf[Counter],FExperience, SizeOF(FExperience));
+    close(ByteFileEngineer);
   end;
 
 end.
