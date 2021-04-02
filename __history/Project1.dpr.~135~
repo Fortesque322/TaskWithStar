@@ -16,22 +16,23 @@ var
 
 begin
   try
-    Data:=0;
     Count := TCount.Create();
 //    Count.SetEngineerName();
 //    Count.SetSalary();
 //    Count.SetExperience();
 //    Count.SetBill();
     Count.SetModel();
+    Count.Server.SaveRecordServer;
 //    Count.SetServiceDate();
 //    Count.SetDetails();
 //    Count.SetUpTime();
-    Count.Server.SaveRecordServer;
-//    Count.ServiceCentr.SaveRecordService;
-//    Count.ServiceEngineer.SaveRecordEngineer;
-    Count.Server.SetBytes(data);
 
-    //    Count.SaveToText();
+//    Count.SaveToText();
+
+//    Count.SaveToNoType();
+
+//    TCount.Create();
+
 //    Count.ReadFromText();
 //    for str in Count.ServiceEngineer.FName do
 //    Writeln('Сотрудники: ' + str);

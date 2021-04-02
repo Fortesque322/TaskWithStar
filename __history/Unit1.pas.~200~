@@ -21,6 +21,7 @@ type
     FBill : integer;
     function AsBytes : TBytes;
     procedure SetBytes(buf:TBytes);
+    procedure SaveRecordService();
   end;
 
   TServiceEngineer = record
@@ -29,6 +30,7 @@ type
     FExperience : integer;
     function AsBytes : TBytes;
     procedure SetBytes(buf:TBytes);
+    procedure SaveRecordEngineer();
   end;
 
   TCount = class
@@ -48,8 +50,6 @@ type
     procedure SaveToText();
     procedure SaveToNoType();
     procedure ReadFromText();
-//    function AsBytes : TBytes;
-//    procedure SetBytes(Buf: Tbytes);
     constructor Create();
     destructor Destroy;
   end;
@@ -310,27 +310,6 @@ procedure TCount.SaveToNoType;
     Close(TextForByte);
   end;
 
-//procedure TCount.SetBytes(Buf: Tbytes);
-//  var
-//  Counter, size:integer;
-//  TextForByte : file;
-//  begin
-//    buf:=0;
-//    Counter:= 0;
-//    AssignFile(TextForByte, 'C:\distr\NoTypeFile');
-//    Reset(TextForByte,1);
-//    BlockRead(TexTForByte, buf[0], Length(buf));
-//    Move(buf[Counter],Server.FUptimeDay, sizeof(Server.FUptimeDay));
-//    inc(counter,sizeof(Server.FUptimeDay));
-//
-//    Move(buf[Counter], Server.FServiceDate, sizeof(Server.FServiceDate));
-//    inc(Counter, sizeof(Server.FServiceDate));
-
-//    Move(buf[Counter], Server.FServiceDate, sizeof(Server.FServiceDate));
-//    inc(Counter, sizeof(integer));
-//    Close(TextForByte);
-//  end;
-
 { TServer }
 
 function TServer.AsBytes: TBytes;
@@ -365,7 +344,6 @@ function TServer.AsBytes: TBytes;
     Move(FUptimeDay,Result[counter],sizeOf(FUptimeDay));
     inc(counter,sizeOf(FUptimeDay));
     Move(FServiceDate,Result[counter],sizeOf(FServiceDate));
-    SaveRecordServer;
   end;
 
 procedure TServer.SaveRecordServer;
@@ -384,9 +362,23 @@ procedure TServer.SaveRecordServer;
   end;
 
 procedure TServer.SetBytes(buf: TBytes);
-begin
+  var
+    Counter, size: integer;
+  begin
+    Counter := 0;
 
-end;
+    Move(buf[Counter],size, SizeOF(integer));
+    inc(Counter,SizeOf(integer));
+
+    SetLength(FModel, size);
+    FModel := TEncoding.UTF8.GetString(Copy(buf,Counter,Size));
+    inc(Counter,Length(Fmodel));
+
+    Move(buf[Counter],FUptimeDay, SizeOF(FUptimeDay));
+    inc(Counter,SizeOf(FUptimeDay));
+
+    Move(buf[Counter],FServiceDate, SizeOF(FServiceDate));
+  end;
 
 { TServiceCentr }
 
@@ -421,7 +413,22 @@ function TServiceCentr.AsBytes: TBytes;
 
   end;
 
-  procedure TServiceCentr.SetBytes(buf: TBytes);
+  procedure TServiceCentr.SaveRecordService;
+  var
+    ByteFileService : File;
+    count:integer;
+    buf : TBytes;
+  begin
+    AssignFile(ByteFileService,'C:\distr\NoTypeService');
+    if not FileExists('C:\distr\NoTypeService') then
+      Rewrite(ByteFileService,1);
+    Reset(ByteFileService,1);
+    buf:=Self.AsBytes;
+    BlockWrite(ByteFileService, buf[0], Length(buf));
+    Close(ByteFileService);
+  end;
+
+procedure TServiceCentr.SetBytes(buf: TBytes);
 begin
 
 end;
@@ -462,6 +469,21 @@ function TServiceEngineer.AsBytes: TBytes;
     inc(counter,sizeOf(FSalary));
 
     Move(FExperience,Result[counter],sizeOf(FExperience));
+  end;
+
+procedure TServiceEngineer.SaveRecordEngineer;
+  var
+    ByteFileEngineer : File;
+    count:integer;
+    buf : TBytes;
+  begin
+    AssignFile(ByteFileEngineer,'C:\distr\NoTypeEngineer');
+    if not FileExists('C:\distr\NoTypeEngineer') then
+      Rewrite(ByteFileEngineer,1);
+    Reset(ByteFileEngineer,1);
+    buf:=Self.AsBytes;
+    BlockWrite(ByteFileEngineer, buf[0], Length(buf));
+    Close(ByteFileEngineer);
   end;
 
 procedure TServiceEngineer.SetBytes(buf: TBytes);

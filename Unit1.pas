@@ -310,27 +310,6 @@ procedure TCount.SaveToNoType;
     Close(TextForByte);
   end;
 
-//procedure TCount.SetBytes(Buf: Tbytes);
-//  var
-//  Counter, size:integer;
-//  TextForByte : file;
-//  begin
-//    buf:=0;
-//    Counter:= 0;
-//    AssignFile(TextForByte, 'C:\distr\NoTypeFile');
-//    Reset(TextForByte,1);
-//    BlockRead(TexTForByte, buf[0], Length(buf));
-//    Move(buf[Counter],Server.FUptimeDay, sizeof(Server.FUptimeDay));
-//    inc(counter,sizeof(Server.FUptimeDay));
-//
-//    Move(buf[Counter], Server.FServiceDate, sizeof(Server.FServiceDate));
-//    inc(Counter, sizeof(Server.FServiceDate));
-
-//    Move(buf[Counter], Server.FServiceDate, sizeof(Server.FServiceDate));
-//    inc(Counter, sizeof(integer));
-//    Close(TextForByte);
-//  end;
-
 { TServer }
 
 function TServer.AsBytes: TBytes;
@@ -383,9 +362,24 @@ procedure TServer.SaveRecordServer;
   end;
 
 procedure TServer.SetBytes(buf: TBytes);
-begin
+  var
+    Counter, size: integer;
+  begin
+    Counter := 0;
+    buf:=AsBytes;
 
-end;
+    Move(buf[Counter],size, SizeOF(integer));
+    inc(Counter,SizeOf(integer));
+
+    SetLength(FModel, size);
+    FModel := TEncoding.UTF8.GetString(Copy(buf,Counter,Size));
+    inc(Counter,Length(Fmodel));
+
+    Move(buf[Counter],FUptimeDay, SizeOF(FUptimeDay));
+    inc(Counter,SizeOf(FUptimeDay));
+
+    Move(buf[Counter],FServiceDate, SizeOF(FServiceDate));
+  end;
 
 { TServiceCentr }
 
