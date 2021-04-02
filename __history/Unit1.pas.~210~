@@ -366,6 +366,7 @@ procedure TServer.SetBytes(buf: TBytes);
     Counter, size: integer;
   begin
     Counter := 0;
+    buf:=AsBytes;
 
     Move(buf[Counter],size, SizeOF(integer));
     inc(Counter,SizeOf(integer));

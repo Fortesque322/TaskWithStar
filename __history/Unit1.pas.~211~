@@ -366,13 +366,15 @@ procedure TServer.SetBytes(buf: TBytes);
     Counter, size: integer;
   begin
     Counter := 0;
+    buf:=AsBytes;
 
     Move(buf[Counter],size, SizeOF(integer));
     inc(Counter,SizeOf(integer));
 
-//    SetLength(FModel, size);
-//    FModel := TEncoding.UTF8.GetString(Copy(buf,Counter,Size));
-//    inc(Counter,Length(Fmodel));
+    SetLength(FModel, size);
+
+    TEncoding.UTF8.GetString(Copy(buf,Self.FModel,Size));
+    inc(Counter,Length(Fmodel));
 
     Move(buf[Counter],FUptimeDay, SizeOF(FUptimeDay));
     inc(Counter,SizeOf(FUptimeDay));
