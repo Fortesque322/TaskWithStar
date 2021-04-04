@@ -17,19 +17,22 @@ var
 begin
   try
     Count := TCount.Create();
-    Count.SetEngineerName();
-    Count.SetSalary();
-    Count.SetExperience();
-    Count.SetBill();
-    Count.SetModel();
-    Count.SetServiceDate();
+//    Count.SetEngineerName();
+//    Count.SetSalary();
+//    Count.SetExperience();
     Count.SetDetails();
-    Count.SetUpTime();
-    Count.Server.SaveRecordServer;
+    Count.SetDeliveryTime();
+    Count.SetBill();
+//    Count.SetModel();
+//    Count.SetUpTime();
+//    Count.SetServiceDate();
+//
+//    Count.Server.SaveRecordServer;
     Count.ServiceCentr.SaveRecordService;
-    Count.ServiceEngineer.SaveRecordEngineer;
-    Count.Server.SetBytes(data);
-
+    Count:= TCount.Create;
+//    Count.ServiceEngineer.SaveRecordEngineer;
+//    Count.Server.SetBytes(data);
+    Count.ServiceCentr.SetBytes(data);
 //    Count.SaveToText();
 //    Count.ReadFromText();
 

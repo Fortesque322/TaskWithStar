@@ -351,7 +351,7 @@ procedure TServer.SetBytes(buf: TBytes);
     ByteFileServer : File;
     data: TBytes;
   begin
-    Counter := 0;
+
     AssignFile(ByteFileServer, 'C:\distr\NoTypeServer');
     FileMode := fmOpenRead;
     Reset(ByteFileServer,1);
@@ -359,17 +359,26 @@ procedure TServer.SetBytes(buf: TBytes);
     BlockRead(ByteFileServer,data,filesize(ByteFileServer));
     SetLength(data,filesize(ByteFileServer));
 
-    Move(buf[Counter],size, SizeOF(integer));
+    Counter := 0;
+    Move(data[Counter],size, SizeOF(integer));
     inc(Counter,SizeOf(integer));
 
-//    SetLength(FModel, size);              // Неверное задание границ
-//    Move(buf[Counter],FModel[0],Size);    //Неправильно вписываю данные в массив
-//    inc(Counter,Length(Fmodel));
+    SetLength(FModel, size);              // Неверное задание границ
 
-    Move(buf[Counter],FUptimeDay, SizeOF(FUptimeDay));
+//      for str in FDModel do
+//      begin
+//        Size := Length(str);
+//        Move(data[Counter], FModel,sizeOf(Size));
+//        inc(counter,SizeOf(Size));
+//      end;
+
+    Move(data[Counter],FModel,Size);    //Неправильно вписываю данные в массив
+    inc(Counter,Length(Fmodel));
+
+    Move(data[Counter],FUptimeDay, SizeOF(FUptimeDay));
     inc(Counter,SizeOf(FUptimeDay));
 
-    Move(buf[Counter],FServiceDate, SizeOF(FServiceDate));
+    Move(data[Counter],FServiceDate, SizeOF(FServiceDate));
 
     Close(ByteFileServer);
   end;
@@ -424,29 +433,36 @@ function TServiceCentr.AsBytes: TBytes;
 
 procedure TServiceCentr.SetBytes(buf: TBytes);
   var
-    Counter, size: integer;
+    Counter, size,x: integer;
     str: string;
     ByteFileService : File;
     data: TBytes;
   begin
-    Counter := 0;
     AssignFile(ByteFileService,'C:\distr\NoTypeService');
     FileMode:= fmOpenRead;
     Reset(ByteFileService,1);
     BlockRead(ByteFileService,data,filesize(ByteFileService));
     SetLength(data,filesize(ByteFileService));
+    Counter := 0;
 
-//    Move(buf[Counter],size, SizeOF(integer));
-//    inc(Counter,SizeOf(integer));
+    Move(data[Counter],size, SizeOF(integer));
+    inc(Counter,SizeOf(integer));
+    SetLength(FDetails, 0);
+    //    SetLength(FDetails,size);
 
-    SetLength(FDetails, size);
-    Move(buf[Counter],FDetails,Size);
-    inc(Counter,Length(FDetails));
+//    for str in FDetails do
+//      begin
+//        Size := Length(str);
+//        Move(data[Counter], FDetails[0],sizeOf(Size));
+//        inc(counter,SizeOf(Size));
+//      end;
+    Move(data[Counter],FDetails,Size);
+    inc(counter,Length(FDetails));
 
-    Move(buf[Counter],FDeliveryTimeDay, SizeOF(FDeliveryTimeDay));
+    Move(data[Counter],FDeliveryTimeDay, SizeOF(FDeliveryTimeDay));
     inc(Counter,SizeOf(FDeliveryTimeDay));
 
-    Move(buf[Counter],FBill, SizeOF(FBill));
+    Move(data[Counter],FBill, SizeOF(FBill));
     close(ByteFileService);
   end;
 
@@ -509,24 +525,24 @@ procedure TServiceEngineer.SetBytes(buf: TBytes);
     data: TBytes;
     ByteFileEngineer: file;
   begin
-    Counter := 0;
+
     AssignFile(ByteFileEngineer,'C:\distr\NoTypeEngineer');
     FileMode:= fmOpenRead;
     Reset(ByteFileEngineer,1);
-    SetLength(data,filesize(ByteFileEngineer));
     BlockRead(ByteFileEngineer,data,filesize(ByteFileEngineer));
-
-    Move(buf[Counter],size, SizeOF(integer));
+    SetLength(data,filesize(ByteFileEngineer));
+    Counter := 0;
+    Move(data[Counter],size, SizeOF(integer));
     inc(Counter,SizeOf(integer));
 
     SetLength(FName, size);
-    Move(buf[Counter],FName,Size);
+    Move(data[Counter],FName,Size);
     inc(Counter,Length(FName));
 
-    Move(buf[Counter],FSalary, SizeOF(FSalary));
+    Move(data[Counter],FSalary, SizeOF(FSalary));
     inc(Counter,SizeOf(FSalary));
 
-    Move(buf[Counter],FExperience, SizeOF(FExperience));
+    Move(data[Counter],FExperience, SizeOF(FExperience));
     close(ByteFileEngineer);
   end;
 
