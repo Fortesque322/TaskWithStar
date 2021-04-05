@@ -192,7 +192,7 @@ procedure TCount.SetExperience();
 procedure TCount.SetModel();
   var
     i,x,number : integer;
-    s : string;
+    s,y : string;
     flag: boolean;
   begin
     i := 0;
@@ -214,8 +214,10 @@ procedure TCount.SetModel();
 
     Writeln('Введите модели: ');
     for I := 0 to number do
-    readln(s);
-    Server.FModel := Server.FModel + [s];
+    begin
+    readln(y);
+    Server.FModel := Server.FModel + [y];
+    end;
   end;
 
 procedure TCount.SetSalary();
@@ -306,7 +308,7 @@ function TServer.AsBytes: TBytes;
     size := SizeOF(ArrayLength) + SizeOF(FUptimeDay) + SizeOF(FServiceDate);
     for str in FModel do
     begin
-      inc(size,Length(str)+SizeOf(integer));
+      inc(size,Length(str)); //+SizeOf(integer)
     end;
     setlength(result,size);
 
@@ -320,11 +322,11 @@ function TServer.AsBytes: TBytes;
       Size := Length(str);
       Move(Size,Result[counter],sizeOf(Size));
       inc(counter,SizeOf(Size));
-      data := TENcoding.UTF8.GetBytes(str);
-      Move(data[0],Result[counter],length(data));
-      inc(counter,length(data));
     end;
 
+    data := TENcoding.UTF8.GetBytes(str);
+    Move(data[0],Result[counter],length(data));
+    inc(counter,length(data));
     Move(FUptimeDay,Result[counter],sizeOf(FUptimeDay));
     inc(counter,sizeOf(FUptimeDay));
     Move(FServiceDate,Result[counter],sizeOf(FServiceDate));
@@ -341,13 +343,13 @@ procedure TServer.SaveRecordServer;
       Rewrite(ByteFileServer,1);
     Reset(ByteFileServer,1);
     buf:=Self.AsBytes;
-    BlockWrite(ByteFileServer, buf, Length(buf));
+    BlockWrite(ByteFileServer, buf[0], Length(buf));
     Close(ByteFileServer);
   end;
 
 procedure TServer.SetBytes(buf: TBytes);
   var
-    Counter, size: integer;
+    Counter, sizeArray,sizeStr: integer;
     ByteFileServer : File;
     data: TBytes;
   begin
@@ -355,25 +357,20 @@ procedure TServer.SetBytes(buf: TBytes);
     AssignFile(ByteFileServer, 'C:\distr\NoTypeServer');
     FileMode := fmOpenRead;
     Reset(ByteFileServer,1);
-
-    BlockRead(ByteFileServer,data,filesize(ByteFileServer));
     SetLength(data,filesize(ByteFileServer));
-
+    BlockRead(ByteFileServer,data[0],filesize(ByteFileServer));
     Counter := 0;
-    Move(data[Counter],size, SizeOF(integer));
+    Move(data[Counter],sizeArray, SizeOF(integer));
+    SetLength(FModel, sizeArray);
     inc(Counter,SizeOf(integer));
 
-    SetLength(FModel, size);              // Неверное задание границ
-
-//      for str in FDModel do
-//      begin
-//        Size := Length(str);
-//        Move(data[Counter], FModel,sizeOf(Size));
-//        inc(counter,SizeOf(Size));
-//      end;
-
-    Move(data[Counter],FModel,Size);    //Неправильно вписываю данные в массив
-    inc(Counter,Length(Fmodel));
+      for var i:=0 to sizeArray-1 do
+      begin
+        Move(data[Counter], sizeStr,sizeOf(integer));
+        inc(counter,SizeOf(integer));
+        FModel[i]:= Tencoding.UTF8.GetString(Copy(data,Counter,sizeStr));
+        inc(counter,sizeStr);
+      end;
 
     Move(data[Counter],FUptimeDay, SizeOF(FUptimeDay));
     inc(Counter,SizeOf(FUptimeDay));
@@ -392,10 +389,10 @@ function TServiceCentr.AsBytes: TBytes;
     data: TBytes;
   begin
     ArrayLength:= Length(FDetails);     //узнаем количество элементов в массиве
-    size:= SizeOf(ArrayLength) + SizeOf(FDeliveryTimeDay) + SizeOf(FBill); //узнаю размер массива в байтах
-    for str in FDetails do       //перебираем элементы в Фдетеилс
+    size:= sizeof(ArrayLength) + SizeOf(FDeliveryTimeDay) + SizeOf(FBill); //узнаю размер массива в байтах
+    for str in FDetails do       //перебираем элементы в Фдетеилс выделяя место под каждый элемент
     begin
-      inc(size,Length(str)+SizeOf(integer));
+      inc(size,Length(str)); //  + SizeOf(integer)
     end;
     setlength(result,size);   // назначаем размерность массива на значения сизе
     Counter:= 0;       //ставим счетчик на первый элемент массива
@@ -427,13 +424,13 @@ function TServiceCentr.AsBytes: TBytes;
       Rewrite(ByteFileService,1);
     Reset(ByteFileService,1);
     buf:=Self.AsBytes;
-    BlockWrite(ByteFileService, buf, Length(buf));
+    BlockWrite(ByteFileService, buf[0], Length(buf));
     Close(ByteFileService);
   end;
 
 procedure TServiceCentr.SetBytes(buf: TBytes);
   var
-    Counter, size,x: integer;
+    Counter, sizeArr,sizeStr,x: integer;
     str: string;
     ByteFileService : File;
     data: TBytes;
@@ -441,24 +438,23 @@ procedure TServiceCentr.SetBytes(buf: TBytes);
     AssignFile(ByteFileService,'C:\distr\NoTypeService');
     FileMode:= fmOpenRead;
     Reset(ByteFileService,1);
-    BlockRead(ByteFileService,data,filesize(ByteFileService));
     SetLength(data,filesize(ByteFileService));
+    BlockRead(ByteFileService,data[0],filesize(ByteFileService));
+
     Counter := 0;
 
-    Move(data[Counter],size, SizeOF(integer));
+    Move(data[Counter],sizeArr, SizeOF(integer));
+    SetLength(Fdetails,sizeArr);
     inc(Counter,SizeOf(integer));
-    SetLength(FDetails, 0);
-//    SetLength(FDetails,size);
 
-//    for str in FDetails do
-//      begin
-//        Size := Length(str);
-//        Move(data[Counter], FDetails[0],sizeOf(Size));
-//        inc(counter,SizeOf(Size));
-//      end;
+    for var i := 0 to sizeArr - 1 do
+      begin
+        Move(data[Counter],sizeStr, SizeOF(integer));
+        inc(Counter,sizeof(integer));  //sizeof(integer)
 
-    Move(data[Counter],FDetails,Size);
-    inc(counter,Length(FDetails));
+        FDetails[i] := Tencoding.UTF8.GetString(Copy(data,Counter,sizeArr));
+        inc(counter,sizearr);
+      end;
 
     Move(data[Counter],FDeliveryTimeDay, SizeOF(FDeliveryTimeDay));
     inc(Counter,SizeOf(FDeliveryTimeDay));

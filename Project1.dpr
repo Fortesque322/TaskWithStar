@@ -30,7 +30,7 @@ begin
 //    Count.Server.SaveRecordServer;
     Count.ServiceCentr.SaveRecordService;
 //    Count.ServiceEngineer.SaveRecordEngineer;
-//    Count.Free;
+    Count.Free;
 //    Count.Server.SetBytes(data);
     Count.ServiceCentr.SetBytes(data);
 //    Count.ServiceEngineer.SetBytes(data);
