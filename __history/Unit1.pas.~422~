@@ -384,29 +384,33 @@ procedure TServer.SetBytes(buf: TBytes);
 
 function TServiceCentr.AsBytes: TBytes;
     var
-    Counter, size, ArrayLength: integer;
+    Counter, sizeArr, sizeStr, ArrayLength: integer;
     str: string;
     data: TBytes;
   begin
     ArrayLength:= Length(FDetails);     //узнаем количество элементов в массиве
-    size:= sizeof(ArrayLength) + SizeOf(FDeliveryTimeDay) + SizeOf(FBill); //узнаю размер массива в байтах
+    sizeArr:= sizeof(ArrayLength) + SizeOf(FDeliveryTimeDay) + SizeOf(FBill); //узнаю размер массива в байтах
     for str in FDetails do       //перебираем элементы в ‘детеилс выдел€€ место под каждый элемент
     begin
-      inc(size,Length(str)+ SizeOf(integer)); //
+      inc(sizeArr,Length(str)); //+ SizeOf(integer))
     end;
-    setlength(result,size);   // назначаем размерность массива на значени€ сизе
+    setlength(result,sizeArr);   // назначаем размерность массива на значени€ сизе
     Counter:= 0;       //ставим счетчик на первый элемент массива
     Move(arrayLength,Result[counter],sizeOf(arrayLength));
     inc(counter,sizeOf(arrayLength));          // увеличиваем счетчик
     for str in FDetails do
       begin
-        Size := Length(str);
-        Move(Size,Result[counter],sizeOf(Size));
-        inc(counter,SizeOf(Size));
+        Sizestr := Length(str);
+        Move(sizestr,Result[counter],sizeOf(Sizestr));
+        inc(counter,SizeOf(Sizestr));
+
+        data:= TEncoding.UTF8.GetBytes(str);//записываем строку в дату  //тут, записывает только один элемент
+        Move(data[0],Result[counter],length(data));
+        inc(counter,length(data));
+
       end;
-    data:= TEncoding.UTF8.GetBytes(str);      //записываем строку в дату
-    Move(data[0],Result[counter],length(data));
-    inc(counter,length(data));
+
+
     Move(FDeliveryTimeDay,Result[counter],sizeOf(FDeliveryTimeDay));
     inc(counter,sizeOf(FDeliveryTimeDay));
     Move(FBill,Result[counter],sizeOf(FBill));
@@ -428,7 +432,7 @@ function TServiceCentr.AsBytes: TBytes;
     Close(ByteFileService);
   end;
 
-procedure TServiceCentr.SetBytes(buf: TBytes);
+procedure TServiceCentr.SetBytes(buf: TBytes);     //ѕри значении 1 все срабатывает при значении выше счетчик не дот€гиваетс€ до массива
   var
     Counter, sizeArr,sizeStr,x: integer;
     str: string;
@@ -452,8 +456,8 @@ procedure TServiceCentr.SetBytes(buf: TBytes);
         Move(data[Counter],sizeStr, SizeOF(integer));
         inc(Counter,sizeof(integer));  //sizeof(integer)
 
-        FDetails[i] := Tencoding.UTF8.GetString(Copy(data,Counter,sizeArr));
-        inc(counter,sizearr);
+        FDetails[i] := Tencoding.UTF8.GetString(Copy(data,Counter,sizestr));
+        inc(counter,sizestr);
       end;
 
     Move(data[Counter],FDeliveryTimeDay, SizeOF(FDeliveryTimeDay));

@@ -308,7 +308,7 @@ function TServer.AsBytes: TBytes;
     size := SizeOF(ArrayLength) + SizeOF(FUptimeDay) + SizeOF(FServiceDate);
     for str in FModel do
     begin
-      inc(size,Length(str)); //+SizeOf(integer)
+      inc(size,Length(str)+ SizeOf(integer)); //+
     end;
     setlength(result,size);
 
@@ -322,11 +322,11 @@ function TServer.AsBytes: TBytes;
       Size := Length(str);
       Move(Size,Result[counter],sizeOf(Size));
       inc(counter,SizeOf(Size));
+      data := TENcoding.UTF8.GetBytes(str);
+      Move(data[0],Result[counter],length(data));
+      inc(counter,length(data));
     end;
 
-    data := TENcoding.UTF8.GetBytes(str);
-    Move(data[0],Result[counter],length(data));
-    inc(counter,length(data));
     Move(FUptimeDay,Result[counter],sizeOf(FUptimeDay));
     inc(counter,sizeOf(FUptimeDay));
     Move(FServiceDate,Result[counter],sizeOf(FServiceDate));
@@ -384,29 +384,33 @@ procedure TServer.SetBytes(buf: TBytes);
 
 function TServiceCentr.AsBytes: TBytes;
     var
-    Counter, size, ArrayLength: integer;
+    Counter, sizeArr, sizeStr, ArrayLength: integer;
     str: string;
     data: TBytes;
   begin
     ArrayLength:= Length(FDetails);     //узнаем количество элементов в массиве
-    size:= sizeof(ArrayLength) + SizeOf(FDeliveryTimeDay) + SizeOf(FBill); //узнаю размер массива в байтах
+    sizeArr:= sizeof(ArrayLength) + SizeOf(FDeliveryTimeDay) + SizeOf(FBill); //узнаю размер массива в байтах
     for str in FDetails do       //перебираем элементы в ‘детеилс выдел€€ место под каждый элемент
     begin
-      inc(size,Length(str)+ SizeOf(integer)); //
+      inc(sizeArr,Length(str)+ SizeOf(integer));
     end;
-    setlength(result,size);   // назначаем размерность массива на значени€ сизе
+    setlength(result,sizeArr);   // назначаем размерность массива на значени€ сизе
     Counter:= 0;       //ставим счетчик на первый элемент массива
     Move(arrayLength,Result[counter],sizeOf(arrayLength));
     inc(counter,sizeOf(arrayLength));          // увеличиваем счетчик
     for str in FDetails do
       begin
-        Size := Length(str);
-        Move(Size,Result[counter],sizeOf(Size));
-        inc(counter,SizeOf(Size));
+        Sizestr := Length(str);
+        Move(sizestr,Result[counter],sizeOf(Sizestr));
+        inc(counter,SizeOf(Sizestr));
+
+        data:= TEncoding.UTF8.GetBytes(str);//записываем строку в дату  //тут, записывает только один элемент
+        Move(data[0],Result[counter],length(data));
+        inc(counter,length(data));
+
       end;
-    data:= TEncoding.UTF8.GetBytes(str);      //записываем строку в дату
-    Move(data[0],Result[counter],length(data));
-    inc(counter,length(data));
+
+
     Move(FDeliveryTimeDay,Result[counter],sizeOf(FDeliveryTimeDay));
     inc(counter,sizeOf(FDeliveryTimeDay));
     Move(FBill,Result[counter],sizeOf(FBill));
@@ -512,13 +516,13 @@ procedure TServiceEngineer.SaveRecordEngineer;
       Rewrite(ByteFileEngineer,1);
     Reset(ByteFileEngineer,1);
     buf:=Self.AsBytes;
-    BlockWrite(ByteFileEngineer, buf, Length(buf));
+    BlockWrite(ByteFileEngineer, buf[0], Length(buf));
     Close(ByteFileEngineer);
   end;
 
 procedure TServiceEngineer.SetBytes(buf: TBytes);
   var
-    Counter, size: integer;
+    Counter, sizeArray, sizeStr: integer;
     data: TBytes;
     ByteFileEngineer: file;
   begin
@@ -526,15 +530,20 @@ procedure TServiceEngineer.SetBytes(buf: TBytes);
     AssignFile(ByteFileEngineer,'C:\distr\NoTypeEngineer');
     FileMode:= fmOpenRead;
     Reset(ByteFileEngineer,1);
-    BlockRead(ByteFileEngineer,data,filesize(ByteFileEngineer));
     SetLength(data,filesize(ByteFileEngineer));
+    BlockRead(ByteFileEngineer,data[0],filesize(ByteFileEngineer));
     Counter := 0;
-    Move(data[Counter],size, SizeOF(integer));
+    Move(data[Counter],sizeArray, SizeOF(integer));
+    SetLength(FName, sizeArray);
     inc(Counter,SizeOf(integer));
 
-    SetLength(FName, size);
-    Move(data[Counter],FName,Size);
-    inc(Counter,Length(FName));
+     for var i := 0 to sizeArray - 1 do
+      begin
+        Move(data[Counter],sizeStr, SizeOF(integer));
+        inc(Counter,sizeof(integer));  //sizeof(integer)
+        FName[i] := Tencoding.UTF8.GetString(Copy(data,Counter,sizestr));
+        inc(counter,sizestr);
+      end;
 
     Move(data[Counter],FSalary, SizeOF(FSalary));
     inc(Counter,SizeOf(FSalary));

@@ -17,25 +17,22 @@ var
 begin
   try
     Count := TCount.Create();
-//    Count.SetEngineerName();
-//    Count.SetSalary();
-//    Count.SetExperience();
+    Count.SetEngineerName();
+    Count.SetSalary();
+    Count.SetExperience();
     Count.SetDetails();
     Count.SetDeliveryTime();
     Count.SetBill();
-//    Count.SetModel();
-//    Count.SetUpTime();
-//    Count.SetServiceDate();
-//
-//    Count.Server.SaveRecordServer;
+    Count.SetModel();
+    Count.SetUpTime();
+    Count.SetServiceDate();
+    Count.Server.SaveRecordServer;
     Count.ServiceCentr.SaveRecordService;
-//    Count.ServiceEngineer.SaveRecordEngineer;
+    Count.ServiceEngineer.SaveRecordEngineer;
     Count.Free;
-//    Count.Server.SetBytes(data);
+    Count.Server.SetBytes(data);
     Count.ServiceCentr.SetBytes(data);
-//    Count.ServiceEngineer.SetBytes(data);
-//    Count.SaveToText();
-//    Count.ReadFromText();
+    Count.ServiceEngineer.SetBytes(data);
 
 //    for str in Count.ServiceEngineer.FName do
 //    Writeln('Сотрудники: ' + str);
