@@ -23,32 +23,26 @@ begin
     Count.SetDetails();
     Count.SetDeliveryTime();
     Count.SetBill();
-//    Count.SetModel();
-//    Count.SetUpTime();
-//    Count.SetServiceDate();
-//    Count.Server.SaveRecordServer;
+    Count.SetModel();
+    Count.SetUpTime();
+    Count.SetServiceDate();
+    Count.Server.SaveRecordServer;
     Count.ServiceCentr.SaveRecordService;
     Count.ServiceEngineer.SaveRecordEngineer;
-//    Count.Free;
-//    Count.Server.SetBytes(data);
+    Count.Free;
+    Count.Server.SetBytes(data);
     Count.ServiceCentr.SetBytes(data);
     Count.ServiceEngineer.SetBytes(data);
 
-    Writeln('---------------------------------');
     for str in Count.ServiceEngineer.FName do
     Writeln('Сотрудники: ' + str);
     Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
     Writeln('Стаж: ' + floattostr(Count.ServiceEngineer.FExperience));
-    Writeln('---------------------------------');
-    for str in Count.ServiceCentr.FDetails do
-    Writeln('Детали: ' + str);
-    Writeln('Время доставки: ' + floattostr(Count.ServiceCentr.FDeliveryTimeDay));
     Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
-//    for str in Count.Server.FModel do
-//    Writeln('Модель Сервера: ' + str);
-//    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
-//    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
-    Writeln('---------------------------------');
+    for str in Count.Server.FModel do
+    Writeln('Модель Сервера: ' + str);
+    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
+    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
     writeln('AnyKey');
     readln;
 

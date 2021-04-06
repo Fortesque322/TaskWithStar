@@ -29,11 +29,10 @@ begin
 //    Count.Server.SaveRecordServer;
     Count.ServiceCentr.SaveRecordService;
     Count.ServiceEngineer.SaveRecordEngineer;
-//    Count.Free;
+    Count.Free;
 //    Count.Server.SetBytes(data);
     Count.ServiceCentr.SetBytes(data);
     Count.ServiceEngineer.SetBytes(data);
-
     Writeln('---------------------------------');
     for str in Count.ServiceEngineer.FName do
     Writeln('Сотрудники: ' + str);
@@ -48,7 +47,6 @@ begin
 //    Writeln('Модель Сервера: ' + str);
 //    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
 //    Writeln('Дней бесперебойной работы: ' + inttostr(Count.Server.FUptimeDay));
-    Writeln('---------------------------------');
     writeln('AnyKey');
     readln;
 

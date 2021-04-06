@@ -17,31 +17,33 @@ var
 begin
   try
     Count := TCount.Create();
-//    Count.SetEngineerName();
-//    Count.SetSalary();
-//    Count.SetExperience();
+    Count.SetEngineerName();
+    Count.SetSalary();
+    Count.SetExperience();
     Count.SetDetails();
     Count.SetDeliveryTime();
     Count.SetBill();
 //    Count.SetModel();
 //    Count.SetUpTime();
 //    Count.SetServiceDate();
-//
 //    Count.Server.SaveRecordServer;
     Count.ServiceCentr.SaveRecordService;
-//    Count.ServiceEngineer.SaveRecordEngineer;
+    Count.ServiceEngineer.SaveRecordEngineer;
     Count.Free;
 //    Count.Server.SetBytes(data);
     Count.ServiceCentr.SetBytes(data);
-//    Count.ServiceEngineer.SetBytes(data);
-//    Count.SaveToText();
-//    Count.ReadFromText();
+    Count.ServiceEngineer.SetBytes(data);
 
-//    for str in Count.ServiceEngineer.FName do
-//    Writeln('Сотрудники: ' + str);
-//    Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
-//    Writeln('Стаж: ' + floattostr(Count.ServiceEngineer.FExperience));
-//    Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
+    Writeln('---------------------------------');
+    for str in Count.ServiceEngineer.FName do
+    Writeln('Сотрудники: ' + str);
+    Writeln('ЗП: ' + floattostr(Count.ServiceEngineer.FSalary));
+    Writeln('Стаж: ' + floattostr(Count.ServiceEngineer.FExperience));
+    Writeln('---------------------------------');
+    for str in Count.ServiceCentr.FDetails do
+    Writeln('Детали: ' + str);
+    Writeln('Время доставки: ' + floattostr(Count.ServiceCentr.FDeliveryTimeDay));
+    Writeln('Счет: ' + floattostr(Count.ServiceCentr.FBill));
 //    for str in Count.Server.FModel do
 //    Writeln('Модель Сервера: ' + str);
 //    Writeln('Дней до обсуживания: ' + inttostr(Count.Server.FServiceDate));
